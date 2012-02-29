@@ -1,12 +1,15 @@
 package com.github.anorber.argparse;
 
-
 import org.junit.Before;
 
 public class TestSetup {
 
 	protected enum Option {
-		A, B, Alpha, Beta, None
+		A,
+		B,
+		Alpha,
+		Beta,
+		None
 	}
 
 	protected ArgumentParser parser;

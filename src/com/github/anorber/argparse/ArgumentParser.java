@@ -32,9 +32,12 @@ class ArgumentParser {
 	}
 
 	private int shortOpt(String[] args, int i) {
+		String argstr = args[i].substring(1);
+
+		int p = 0;
 		for (Argument arg : arguments) {
-			if (args[i].equals("-" + arg.getShortName())) {
-				if (arg.takesArgument()) {
+			if (argstr.charAt(p) == arg.getShortName()) {
+				if (arg.takesArgument() && argstr.length() - 1 == p) {
 					++i;
 				}
 				return i;

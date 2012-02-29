@@ -57,4 +57,16 @@ public class ShortOptTest extends TestSetup {
 		//then
 		assertThat(result, is(a_b_c));
 	}
+
+	@Test
+	public void testParserShortOptWithEmbeddedArgument() {
+		//given
+		String[] args = new String[] {"-afoo", "a", "b", "c"};
+
+		//when
+		String[] result = parser.parse(args);
+
+		//then
+		assertThat(result, is(a_b_c));
+	}
 }

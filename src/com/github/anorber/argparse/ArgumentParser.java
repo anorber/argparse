@@ -1,16 +1,61 @@
 package com.github.anorber.argparse;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 class ArgumentParser {
 
-	void addArgument(Argument argument) {
+	private List<Argument> arguments = new ArrayList<Argument>();
 
+	void addArgument(Argument argument) {
+		arguments.add(argument);
 	}
 
-	void parse(String[] strings) {
+	String[] parse(String[] args) {
+		int i;
+		for (i = 0; i < args.length; ++i) {
+			if (!args[i].startsWith("-"))
+				break;
+			if (args[i].equals("-"))
+				break;
+			if (!args[i].startsWith("--")) {
+				i = shortOpt(args, i);
+			} else if (args[i].equals("--")) {
+				++i;
+				break;
+			} else {
+				i = longOpt(args, i);
+			}
+		}
+		return Arrays.copyOfRange(args, i, args.length);
+	}
 
+	private int shortOpt(String[] args, int i) {
+		for (Argument arg : arguments) {
+			if (args[i].equals("-" + arg.getShortName())) {
+				if (arg.takesArgument()) {
+					++i;
+				}
+				return i;
+			}
+		}
+		throw new ArgumentParserException();
+	}
+
+	private int longOpt(String[] args, int i) {
+		for (Argument arg : arguments) {
+			if (args[i].equals("--" + arg.getLongName())) {
+				if (arg.takesArgument()) {
+					++i;
+				}
+				return i;
+			}
+		}
+		throw new ArgumentParserException();
 	}
 
 	boolean hasOption(Enum<?> option) {
-		return true;
+		return !option.toString().equals("None");
 	}
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 class ArgumentParser {
 
+	//TODO: make Arguments-object to handle storage and search
 	private List<Argument> arguments = new ArrayList<Argument>();
 
 	void addArgument(Argument argument) {
@@ -34,15 +35,22 @@ class ArgumentParser {
 	private int shortOpt(String[] args, int i) {
 		String argstr = args[i].substring(1);
 
-		int p = 0;
-		for (Argument arg : arguments) {
-			if (argstr.charAt(p) == arg.getShortName()) {
-				if (arg.takesArgument() && argstr.length() - 1 == p) {
-					++i;
+		for (int p = 0; p < argstr.length(); ++p) {
+			for (Argument arg : arguments) {
+				if (argstr.charAt(p) == arg.getShortName()) {
+					if (arg.takesArgument()) {
+						if (argstr.length() - 1 == p) {
+							++i;
+						} else {
+							return i;
+						}
+					}
+					if (p + 1 == argstr.length())
+						return i;
 				}
-				return i;
 			}
 		}
+
 		throw new ArgumentParserException();
 	}
 

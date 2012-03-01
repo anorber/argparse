@@ -1,19 +1,20 @@
 package com.github.anorber.argparse;
 
-class Argument {
+class Argument <E extends Enum<?>> {
 
 	private char shortName;
 	private String longName;
-	private final boolean takesArgument;
-	private final Enum<?> id;
 
-	Argument(String name, boolean hasArgument, Enum<?> id) {
+	private final boolean takesArgument;
+	private final E id;
+
+	Argument(String name, boolean hasArgument, E id) {
 		this.longName = name;
 		this.takesArgument = hasArgument;
 		this.id = id;
 	}
 
-	Argument(char name, boolean hasArgument, Enum<?> id) {
+	Argument(char name, boolean hasArgument, E id) {
 		this.shortName = name;
 		this.takesArgument = hasArgument;
 		this.id = id;
@@ -31,7 +32,7 @@ class Argument {
 		return takesArgument;
 	}
 
-	Enum<?> getId() {
+	E getId() {
 		return id;
 	}
 }

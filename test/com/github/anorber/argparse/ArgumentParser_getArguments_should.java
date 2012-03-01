@@ -9,7 +9,7 @@ import org.junit.Test;
 public class ArgumentParser_getArguments_should extends TestSetup {
 
 	@Test
-	public void return_zero_arguments_if_option_does_not_exist() {
+	public void return_null_if_option_does_not_exist() {
 		parser.parse(args);
 		assertThat(parser.getArguments(OptionId.None), nullValue());
 	}

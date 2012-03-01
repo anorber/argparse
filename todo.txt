@@ -1,0 +1,12 @@
+
+--b
+--be
+--bet
+
+--a
+--al
+--alp
+--alph
+
+--alpha=foo
+

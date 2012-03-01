@@ -2,7 +2,6 @@ package com.github.anorber.argparse;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 class ArgumentList {
 
@@ -21,13 +20,19 @@ class ArgumentList {
 		throw new ArgumentParserException();
 	}
 
-	boolean longOptTakesArgument(String longOpt, Map<Enum<?>, String> opts) {
+	List<Argument> findLongOpts(String longOpt) {
+		List<Argument> opts = new ArrayList<Argument>();
+
 		for (Argument arg : list) {
-			if (longOpt.equals("--" + arg.getLongName())) {
-				opts.put(arg.getId(), null);
-				return arg.takesArgument();
+			String longName = arg.getLongName();
+			if (longName == null)
+				continue;
+			if (longName.startsWith(longOpt)) {
+				opts.add(arg);
 			}
 		}
-		throw new ArgumentParserException();
+		if (opts.isEmpty())
+			throw new ArgumentParserException();
+		return opts;
 	}
 }

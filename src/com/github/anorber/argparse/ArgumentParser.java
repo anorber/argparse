@@ -53,10 +53,33 @@ class ArgumentParser {
 	}
 
 	private int longOpt(String[] args, int i) {
-		boolean takesArguments = arguments.longOptTakesArgument(args[i], opts);
-		if (takesArguments) {
-			return i + 1;
+		int j = args[i].indexOf('=');
+		final String optstr;
+		final String optarg;
+		if (j > 0) {
+			optstr = args[i].substring(2, j);
+			optarg = args[i].substring(j + 1);
 		} else {
+			optstr = args[i].substring(2);
+			optarg = null;
+		}
+
+		List<Argument> possibilities = arguments.findLongOpts(optstr);
+
+		if (possibilities.size() > 1)
+			throw new ArgumentParserException();
+
+		Argument opt = possibilities.get(0);
+		boolean takesArguments = opt.takesArgument();
+		if (takesArguments) {
+			if (optarg == null) {
+				opts.put(opt.getId(), args[i + 1]);
+				return i + 1;
+			}
+			opts.put(opt.getId(), optarg);
+			return i;
+		} else {
+			opts.put(opt.getId(), null);
 			return i;
 		}
 	}

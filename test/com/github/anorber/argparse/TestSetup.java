@@ -5,11 +5,7 @@ import org.junit.Before;
 public class TestSetup {
 
 	protected enum Option {
-		A,
-		B,
-		Alpha,
-		Beta,
-		None
+		A, B, Alpha, Beta, None, Bar, Bas
 	}
 
 	protected ArgumentParser parser;
@@ -23,5 +19,7 @@ public class TestSetup {
 		parser.addArgument(new Argument('b', false, Option.B));
 		parser.addArgument(new Argument("alpha", true, Option.Alpha));
 		parser.addArgument(new Argument("beta", false, Option.Beta));
+		parser.addArgument(new Argument("bas", false, Option.Bas));
+		parser.addArgument(new Argument("bar", false, Option.Bar));
 	}
 }

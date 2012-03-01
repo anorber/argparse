@@ -8,9 +8,6 @@ import org.junit.Test;
 
 public class LongOptTest extends TestSetup {
 
-	//TODO:
-	// - Abbreviated name conflicts
-
 	@Test
 	public void testParserUnknownLongOpt() {
 		//given
@@ -21,8 +18,9 @@ public class LongOptTest extends TestSetup {
 			parser.parse(args);
 
 			fail("unknown arguments should throw exception");
-		} catch (ArgumentParserException e) {
-		}
+		} catch (ArgumentParserException e) { }
+
+		//then
 		assertThat(parser.hasOption(Option.Alpha), is(false));
 		assertThat(parser.hasOption(Option.Beta), is(false));
 		assertThat(parser.hasOption(Option.None), is(false));
@@ -44,7 +42,7 @@ public class LongOptTest extends TestSetup {
 	@Test
 	public void testParserPartialLongOptNoArgument() {
 		//given
-		String[] args = new String[] {"--b", "a", "b", "c"};
+		String[] args = new String[] {"--be", "a", "b", "c"};
 
 		//when
 		String[] result = parser.parse(args);

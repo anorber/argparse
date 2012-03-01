@@ -10,6 +10,8 @@ import org.junit.*;
 
 public class ArgumentParser_iterable_should extends TestSetup {
 
+	//TODO: clean up
+
 	@Test
 	public void test1() {
 		//given
@@ -208,5 +210,41 @@ public class ArgumentParser_iterable_should extends TestSetup {
 
 		//then
 		assertFalse(it.hasNext());
+	}
+
+
+	@Test
+	public void test10() {
+		//given
+		Option opt;
+		OptionId id;
+		String arg;
+		parser.parse(new String[] {"-baabba", "-bba", "foo", "bar"});
+
+		//when
+		Iterator<Option> it = parser.iterator();
+
+		//then
+		opt = it.next();
+		id = (OptionId)opt.id;
+		assertThat(id, is(OptionId.B));
+
+		opt = it.next();
+		id = (OptionId)opt.id;
+		assertThat(id, is(OptionId.A));
+
+		opt = it.next();
+		id = (OptionId)opt.id;
+		assertThat(id, is(OptionId.B));
+
+		opt = it.next();
+		id = (OptionId)opt.id;
+		assertThat(id, is(OptionId.B));
+
+		opt = it.next();
+		id = (OptionId)opt.id;
+		arg = opt.argument;
+		assertThat(id, is(OptionId.A));
+		assertThat(arg, is("foo"));
 	}
 }

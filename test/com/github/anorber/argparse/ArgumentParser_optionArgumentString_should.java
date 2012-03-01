@@ -3,6 +3,7 @@ package com.github.anorber.argparse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
@@ -21,8 +22,12 @@ public class ArgumentParser_optionArgumentString_should extends TestSetup {
 	}
 
 	@Test
-	public void return_null_for_options_that_occured_more_than_once() {
+	public void throw_exception_for_options_that_occured_more_than_once() {
 		parser.parse(args);
-		assertThat(parser.optionArgumentString(OptionId.B), nullValue());
+		try {
+			assertThat(parser.optionArgumentString(OptionId.B), nullValue());
+			fail();
+		} catch (ArgumentParserException e) {
+		}
 	}
 }

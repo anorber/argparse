@@ -6,7 +6,7 @@ class ArgumentParser implements Iterable<Option> {
 
 	private ArgumentList arguments = new ArgumentList();
 	private List<Option> optList = new ArrayList<Option>();
-	private Map<Enum<?>, String> opts = new HashMap<Enum<?>, String>();
+	private Map<Enum<?>, List<String>> opts = new HashMap<Enum<?>, List<String>>();
 
 	void addArgument(Argument argument) {
 		if (argument == null)
@@ -46,21 +46,25 @@ class ArgumentParser implements Iterable<Option> {
 					if (args.length == i + 1)
 						throw new ArgumentParserException();
 					final String argumentString = args[i + 1];
-					optList.add(new Option(id, argumentString));
-					opts.put(id, argumentString);
+					addOption(id, argumentString);
 					return i + 1;
 				} else {
 					final String argumentString = argstr.substring(j + 1);
-					optList.add(new Option(id, argumentString));
-					opts.put(id, argumentString);
+					addOption(id, argumentString);
 					return i;
 				}
 			} else {
-				optList.add(new Option(id, null));
-				opts.put(id, null);
+				addOption(id, null);
 			}
 		}
 		return i;
+	}
+
+	private void addOption(final Enum<?> id, final String argumentString) {
+		optList.add(new Option(id, argumentString));
+		if (!opts.containsKey(id))
+			opts.put(id, new ArrayList<String>());
+		opts.get(id).add(argumentString);
 	}
 
 	private int longOpt(String[] args, int i) {
@@ -99,18 +103,15 @@ class ArgumentParser implements Iterable<Option> {
 				if (args.length == i + 1)
 					throw new ArgumentParserException();
 				final String argumentString = args[i + 1];
-				optList.add(new Option(id, argumentString));
-				opts.put(id, argumentString);
+				addOption(id, argumentString);
 				return i + 1;
 			}
-			optList.add(new Option(id, optarg));
-			opts.put(id, optarg);
+			addOption(id, optarg);
 			return i;
 		} else {
 			if (optarg != null)
 				throw new ArgumentParserException();
-			optList.add(new Option(id, null));
-			opts.put(id, null);
+			addOption(id, null);
 			return i;
 		}
 	}
@@ -120,11 +121,23 @@ class ArgumentParser implements Iterable<Option> {
 	}
 
 	String optionArgumentString(Enum<?> option) {
-		return opts.get(option);
+		List<String> opt = opts.get(option);
+		if (opt == null)
+			return null;
+		if (opt.size() != 1)
+			throw new ArgumentParserException();
+		return opt.get(0);
 	}
 
 	@Override
 	public Iterator<Option> iterator() {
 		return optList.iterator();
+	}
+
+	String[] getArguments(Enum<?> id) {
+		List<String> opt = opts.get(id);
+		if (opt != null)
+			return opt.toArray(new String[0]);
+		return null;
 	}
 }

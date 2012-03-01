@@ -1,13 +1,11 @@
 package com.github.anorber.argparse;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 class ArgumentParser {
 
 	//TODO: make Arguments-object to handle storage and search
-	private List<Argument> arguments = new ArrayList<Argument>();
+	private ArgumentList arguments = new ArgumentList();
 
 	void addArgument(Argument argument) {
 		arguments.add(argument);
@@ -33,37 +31,29 @@ class ArgumentParser {
 	}
 
 	private int shortOpt(String[] args, int i) {
-		String argstr = args[i].substring(1);
-
-		for (int p = 0; p < argstr.length(); ++p) {
-			for (Argument arg : arguments) {
-				if (argstr.charAt(p) == arg.getShortName()) {
-					if (arg.takesArgument()) {
-						if (argstr.length() - 1 == p) {
-							++i;
-						} else {
-							return i;
-						}
-					}
-					if (p + 1 == argstr.length())
-						return i;
+		final String argstr = args[i];
+		final int length = argstr.length();
+		for (int j = 1; j < length; ++j) {
+			final char opt = argstr.charAt(j);
+			boolean takesArg = arguments.shortOptTakesArgument(opt);
+			if (takesArg) {
+				if (j + 1 == length) {
+					return i + 1;
+				} else {
+					return i;
 				}
 			}
 		}
-
-		throw new ArgumentParserException();
+		return i;
 	}
 
 	private int longOpt(String[] args, int i) {
-		for (Argument arg : arguments) {
-			if (args[i].equals("--" + arg.getLongName())) {
-				if (arg.takesArgument()) {
-					++i;
-				}
-				return i;
-			}
+		boolean takesArguments = arguments.longOptTakesArgument(args[i]);
+		if (takesArguments) {
+			return i + 1;
+		} else {
+			return i;
 		}
-		throw new ArgumentParserException();
 	}
 
 	boolean hasOption(Enum<?> option) {

@@ -1,6 +1,6 @@
 package com.github.anorber.argparse;
 
-class Argument <E extends Enum<?>> {
+public class Argument <E extends Enum<?>> {
 
 	private char shortName;
 	private String longName;
@@ -8,13 +8,25 @@ class Argument <E extends Enum<?>> {
 	private final boolean takesArgument;
 	private final E id;
 
-	Argument(String name, boolean hasArgument, E id) {
+	/**TODO
+	 *
+	 * @param name
+	 * @param hasArgument
+	 * @param id
+	 */
+	public Argument(String name, boolean hasArgument, E id) {
 		this.longName = name;
 		this.takesArgument = hasArgument;
 		this.id = id;
 	}
 
-	Argument(char name, boolean hasArgument, E id) {
+	/**TODO
+	 *
+	 * @param name
+	 * @param hasArgument
+	 * @param id
+	 */
+	public Argument(char name, boolean hasArgument, E id) {
 		this.shortName = name;
 		this.takesArgument = hasArgument;
 		this.id = id;

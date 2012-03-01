@@ -1,20 +1,34 @@
 package com.github.anorber.argparse;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
-class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
+public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 
 	private ArgumentList<E> arguments = new ArgumentList<E>();
 	private List<Option<E>> optList = new ArrayList<Option<E>>();
 	private Map<E, List<String>> opts = new HashMap<E, List<String>>();
 
-	void addArgument(Argument<E> argument) {
+	/**TODO
+	 *
+	 * @param argument
+	 */
+	public void addArgument(Argument<E> argument) {
 		if (argument == null)
 			throw new NullPointerException();
 		arguments.add(argument);
 	}
 
-	String[] parse(String[] args) {
+	/**TODO
+	 *
+	 * @param args
+	 * @return
+	 */
+	public String[] parse(String[] args) {
 		int i;
 		for (i = 0; i < args.length; ++i) {
 			if (!args[i].startsWith("-"))
@@ -117,11 +131,21 @@ class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 		}
 	}
 
-	boolean hasOption(Enum<?> option) {
+	/**TODO
+	 *
+	 * @param option
+	 * @return
+	 */
+	public boolean hasOption(Enum<?> option) {
 		return opts.containsKey(option);
 	}
 
-	String optionArgumentString(Enum<?> option) {
+	/**TODO
+	 *
+	 * @param option
+	 * @return
+	 */
+	public String optionArgumentString(Enum<?> option) {
 		List<String> opt = opts.get(option);
 		if (opt == null)
 			return null;
@@ -130,12 +154,20 @@ class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 		return opt.get(0);
 	}
 
+	/*
+	 * @see java.lang.Runnable#run()
+	 */
 	@Override
 	public Iterator<Option<E>> iterator() {
 		return optList.iterator();
 	}
 
-	String[] getArguments(Enum<?> id) {
+	/**TODO
+	 *
+	 * @param id
+	 * @return
+	 */
+	public String[] getArguments(Enum<?> id) {
 		List<String> opt = opts.get(id);
 		if (opt != null)
 			return opt.toArray(new String[0]);

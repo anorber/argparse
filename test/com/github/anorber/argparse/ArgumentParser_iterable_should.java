@@ -25,8 +25,8 @@ public class ArgumentParser_iterable_should extends TestSetup {
 
 		//then
 		opt = it.next();
-		id = opt.id;
-		arg = opt.argument;
+		id = opt.getId();
+		arg = opt.getArgument();
 		assertThat(id, is(OptionId.A));
 		assertThat(arg, is("foo"));
 	}
@@ -45,7 +45,7 @@ public class ArgumentParser_iterable_should extends TestSetup {
 		opt = it.next();
 
 		opt = it.next();
-		id = opt.id;
+		id = opt.getId();
 		assertThat(id, is(OptionId.B));
 	}
 
@@ -65,8 +65,8 @@ public class ArgumentParser_iterable_should extends TestSetup {
 		opt = it.next();
 
 		opt = it.next();
-		id = opt.id;
-		arg = opt.argument;
+		id = opt.getId();
+		arg = opt.getArgument();
 		assertThat(id, is(OptionId.Alpha));
 		assertThat(arg, is("one"));
 	}
@@ -89,8 +89,8 @@ public class ArgumentParser_iterable_should extends TestSetup {
 		opt = it.next();
 
 		opt = it.next();
-		id = opt.id;
-		arg = opt.argument;
+		id = opt.getId();
+		arg = opt.getArgument();
 		assertThat(id, is(OptionId.Alpha));
 		assertThat(arg, is("two"));
 	}
@@ -113,8 +113,8 @@ public class ArgumentParser_iterable_should extends TestSetup {
 		opt = it.next();
 
 		opt = it.next();
-		id = opt.id;
-		arg = opt.argument;
+		id = opt.getId();
+		arg = opt.getArgument();
 		assertThat(id, is(OptionId.Alpha));
 		assertThat(arg, is("two"));
 	}
@@ -139,8 +139,8 @@ public class ArgumentParser_iterable_should extends TestSetup {
 		opt = it.next();
 
 		opt = it.next();
-		id = opt.id;
-		arg = opt.argument;
+		id = opt.getId();
+		arg = opt.getArgument();
 		assertThat(id, is(OptionId.Alpha));
 		assertThat(arg, is("four"));
 	}
@@ -165,8 +165,8 @@ public class ArgumentParser_iterable_should extends TestSetup {
 		opt = it.next();
 
 		opt = it.next();
-		id = opt.id;
-		arg = opt.argument;
+		id = opt.getId();
+		arg = opt.getArgument();
 		assertThat(id, is(OptionId.Alpha));
 		assertThat(arg, is("four"));
 	}
@@ -186,7 +186,7 @@ public class ArgumentParser_iterable_should extends TestSetup {
 		it.next();
 		it.next();
 		Option<OptionId> opt = it.next();
-		OptionId id = opt.id;
+		OptionId id = opt.getId();
 
 		//then
 		assertThat(id, is(OptionId.B));
@@ -226,24 +226,24 @@ public class ArgumentParser_iterable_should extends TestSetup {
 
 		//then
 		opt = it.next();
-		id = opt.id;
+		id = opt.getId();
 		assertThat(id, is(OptionId.B));
 
 		opt = it.next();
-		id = opt.id;
+		id = opt.getId();
 		assertThat(id, is(OptionId.A));
 
 		opt = it.next();
-		id = opt.id;
+		id = opt.getId();
 		assertThat(id, is(OptionId.B));
 
 		opt = it.next();
-		id = opt.id;
+		id = opt.getId();
 		assertThat(id, is(OptionId.B));
 
 		opt = it.next();
-		id = opt.id;
-		arg = opt.argument;
+		id = opt.getId();
+		arg = opt.getArgument();
 		assertThat(id, is(OptionId.A));
 		assertThat(arg, is("foo"));
 	}

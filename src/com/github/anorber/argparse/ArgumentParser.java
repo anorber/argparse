@@ -2,13 +2,13 @@ package com.github.anorber.argparse;
 
 import java.util.*;
 
-class ArgumentParser implements Iterable<Option> {
+class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 
-	private ArgumentList arguments = new ArgumentList();
-	private List<Option> optList = new ArrayList<Option>();
-	private Map<Enum<?>, List<String>> opts = new HashMap<Enum<?>, List<String>>();
+	private ArgumentList<E> arguments = new ArgumentList<E>();
+	private List<Option<E>> optList = new ArrayList<Option<E>>();
+	private Map<E, List<String>> opts = new HashMap<E, List<String>>();
 
-	void addArgument(Argument argument) {
+	void addArgument(Argument<E> argument) {
 		if (argument == null)
 			throw new NullPointerException();
 		arguments.add(argument);
@@ -38,13 +38,13 @@ class ArgumentParser implements Iterable<Option> {
 		final int length = argstr.length();
 		for (int j = 1; j < length; ++j) {
 			final char opt = argstr.charAt(j);
-			final Argument argument = arguments.findShortOpt(opt);
+			final Argument<E> argument = arguments.findShortOpt(opt);
 			final boolean takesArg = argument.takesArgument();
-			final Enum<?> id = argument.getId();
+			final E id = argument.getId();
 			if (takesArg) {
 				if (j + 1 == length) {
 					if (args.length == i + 1)
-						throw new ArgumentParserException();
+						throw new ArgumentParserException("option -" + opt + " requires argument", opt);
 					final String argumentString = args[i + 1];
 					addOption(id, argumentString);
 					return i + 1;
@@ -60,8 +60,8 @@ class ArgumentParser implements Iterable<Option> {
 		return i;
 	}
 
-	private void addOption(final Enum<?> id, final String argumentString) {
-		optList.add(new Option(id, argumentString));
+	private void addOption(final E id, final String argumentString) {
+		optList.add(new Option<E>(id, argumentString));
 		if (!opts.containsKey(id))
 			opts.put(id, new ArrayList<String>());
 		opts.get(id).add(argumentString);
@@ -81,27 +81,28 @@ class ArgumentParser implements Iterable<Option> {
 			optarg = null;
 		}
 
-		final List<Argument> possibilities = arguments.findLongOpts(optstr);
+		final List<Argument<E>> possibilities = arguments.findLongOpts(optstr);
 
-		Argument opt = null;
+		Argument<E> opt = null;
 		if (possibilities.size() > 1) {
-			for (Argument a : possibilities) {
-				if (a.getLongName().equals(args[i])) {
+			for (Argument<E> a : possibilities) {
+				if (a.getLongName().equals(optstr)) {
 					opt = a;
 				}
 			}
 			if (opt == null) {
-				throw new ArgumentParserException();
+				throw new ArgumentParserException("option --" + optstr + " not a unique prefix", optstr);
 			}
+		} else {
+			opt = possibilities.get(0);
 		}
-		opt = possibilities.get(0);
 
 		final boolean takesArguments = opt.takesArgument();
-		final Enum<?> id = opt.getId();
+		final E id = opt.getId();
 		if (takesArguments) {
 			if (optarg == null) {
 				if (args.length == i + 1)
-					throw new ArgumentParserException();
+					throw new ArgumentParserException("option --" + opt.getLongName() + " requires argument", optstr);
 				final String argumentString = args[i + 1];
 				addOption(id, argumentString);
 				return i + 1;
@@ -110,7 +111,7 @@ class ArgumentParser implements Iterable<Option> {
 			return i;
 		} else {
 			if (optarg != null)
-				throw new ArgumentParserException();
+				throw new ArgumentParserException("option --" + optstr + " must not have an argument", optstr);
 			addOption(id, null);
 			return i;
 		}
@@ -125,12 +126,12 @@ class ArgumentParser implements Iterable<Option> {
 		if (opt == null)
 			return null;
 		if (opt.size() != 1)
-			throw new ArgumentParserException();
+			throw new ArgumentParserException();  //FIXME
 		return opt.get(0);
 	}
 
 	@Override
-	public Iterator<Option> iterator() {
+	public Iterator<Option<E>> iterator() {
 		return optList.iterator();
 	}
 

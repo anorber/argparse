@@ -19,18 +19,18 @@ public class TestSetup {
 			"-b"
 	};
 
-	protected ArgumentParser parser;
+	protected ArgumentParser<OptionId> parser;
 	protected String[] noArgs = new String[] {};
 	protected String[] a_b_c = new String[] {"a", "b", "c"};
 
 	@Before
 	public void setup() {
-		parser = new ArgumentParser();
-		parser.addArgument(new Argument('a', true, OptionId.A));
-		parser.addArgument(new Argument('b', false, OptionId.B));
-		parser.addArgument(new Argument("alpha", true, OptionId.Alpha));
-		parser.addArgument(new Argument("beta", false, OptionId.Beta));
-		parser.addArgument(new Argument("bas", false, OptionId.Bas));
-		parser.addArgument(new Argument("bar", false, OptionId.Bar));
+		parser = new ArgumentParser<OptionId>();
+		parser.addArgument(new Argument<OptionId>('a', true, OptionId.A));
+		parser.addArgument(new Argument<OptionId>('b', false, OptionId.B));
+		parser.addArgument(new Argument<OptionId>("alpha", true, OptionId.Alpha));
+		parser.addArgument(new Argument<OptionId>("beta", false, OptionId.Beta));
+		parser.addArgument(new Argument<OptionId>("bas", false, OptionId.Bas));
+		parser.addArgument(new Argument<OptionId>("bar", false, OptionId.Bar));
 	}
 }

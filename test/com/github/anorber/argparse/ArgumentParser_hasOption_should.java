@@ -39,7 +39,7 @@ public class ArgumentParser_hasOption_should extends TestSetup {
 
 	@Test
 	public void recognize_longopts_that_is_substring_of_other_longopt() {
-		parser.addArgument(new Argument("bastu", false, null));
+		parser.addArgument(new Argument<OptionId>("bastu", false, null));
 		parser.parse(new String[] {"--bas"});
 		assertThat(parser.hasOption(OptionId.Bas), is(true));
 	}

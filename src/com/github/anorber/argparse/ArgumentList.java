@@ -3,27 +3,27 @@ package com.github.anorber.argparse;
 import java.util.ArrayList;
 import java.util.List;
 
-class ArgumentList {
+class ArgumentList <E extends Enum<?>> {
 
-	private List<Argument> list = new ArrayList<Argument>();
+	private List<Argument<E>> list = new ArrayList<Argument<E>>();
 
-	void add(Argument argument) {
+	void add(Argument<E> argument) {
 		list.add(argument);
 	}
 
-	Argument findShortOpt(char shortOpt) {
-		for (Argument arg : list) {
+	Argument<E> findShortOpt(char shortOpt) {
+		for (Argument<E> arg : list) {
 			if (arg.getShortName() == shortOpt) {
 				return arg;
 			}
 		}
-		throw new ArgumentParserException();
+		throw new ArgumentParserException("option -" + shortOpt + " not recognized", shortOpt);
 	}
 
-	List<Argument> findLongOpts(String longOpt) {
-		List<Argument> opts = new ArrayList<Argument>();
+	List<Argument<E>> findLongOpts(String longOpt) {
+		List<Argument<E>> opts = new ArrayList<Argument<E>>();
 
-		for (Argument arg : list) {
+		for (Argument<E> arg : list) {
 			String longName = arg.getLongName();
 			if (longName == null)
 				continue;
@@ -32,7 +32,7 @@ class ArgumentList {
 			}
 		}
 		if (opts.isEmpty())
-			throw new ArgumentParserException();
+			throw new ArgumentParserException("option --" + longOpt + " not recognized", longOpt);
 		return opts;
 	}
 }

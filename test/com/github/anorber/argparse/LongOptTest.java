@@ -18,8 +18,9 @@ public class LongOptTest extends TestSetup {
 			parser.parse(args);
 
 			fail("unknown arguments should throw exception");
-		} catch (ArgumentParserException e) {
-		}
+		} catch (ArgumentParserException e) { }
+
+		//then
 		assertThat(parser.hasOption(Option.Alpha), is(false));
 		assertThat(parser.hasOption(Option.Beta), is(false));
 		assertThat(parser.hasOption(Option.None), is(false));
@@ -39,9 +40,35 @@ public class LongOptTest extends TestSetup {
 	}
 
 	@Test
+	public void testParserPartialLongOptNoArgument() {
+		//given
+		String[] args = new String[] {"--be", "a", "b", "c"};
+
+		//when
+		String[] result = parser.parse(args);
+
+		//then
+		assertThat(result, is(a_b_c));
+		assertThat(parser.hasOption(Option.Beta), is(true));
+	}
+
+	@Test
 	public void testParserLongOptWithArgument() {
 		//given
 		String[] args = new String[] {"--alpha", "foo", "a", "b", "c"};
+
+		//when
+		String[] result = parser.parse(args);
+
+		//then
+		assertThat(result, is(a_b_c));
+		assertThat(parser.hasOption(Option.Alpha), is(true));
+	}
+
+	@Test
+	public void testParserLongOptWithEmbeddedArgument() {
+		//given
+		String[] args = new String[] {"--alpha=foo", "a", "b", "c"};
 
 		//when
 		String[] result = parser.parse(args);

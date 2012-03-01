@@ -8,6 +8,8 @@ class ArgumentParser {
 	private Map<Enum<?>, String> opts = new HashMap<Enum<?>, String>();
 
 	void addArgument(Argument argument) {
+		if (argument == null)
+			throw new NullPointerException();
 		arguments.add(argument);
 	}
 
@@ -35,10 +37,12 @@ class ArgumentParser {
 		final int length = argstr.length();
 		for (int j = 1; j < length; ++j) {
 			final char opt = argstr.charAt(j);
-			Argument argument = arguments.findShortOpt(opt);
-			boolean takesArg = argument.takesArgument();
+			final Argument argument = arguments.findShortOpt(opt);
+			final boolean takesArg = argument.takesArgument();
 			if (takesArg) {
 				if (j + 1 == length) {
+					if (args.length == i + 1)
+						throw new ArgumentParserException();
 					opts.put(argument.getId(), args[i + 1]);
 					return i + 1;
 				} else {
@@ -53,10 +57,48 @@ class ArgumentParser {
 	}
 
 	private int longOpt(String[] args, int i) {
-		boolean takesArguments = arguments.longOptTakesArgument(args[i], opts);
-		if (takesArguments) {
-			return i + 1;
+		final int j = args[i].indexOf('=');
+
+		final String optstr;
+		final String optarg;
+
+		if (j > 0) {
+			optstr = args[i].substring(2, j);
+			optarg = args[i].substring(j + 1);
 		} else {
+			optstr = args[i].substring(2);
+			optarg = null;
+		}
+
+		final List<Argument> possibilities = arguments.findLongOpts(optstr);
+
+		Argument opt = null;
+		if (possibilities.size() > 1) {
+			for (Argument a : possibilities) {
+				if (a.getLongName().equals(args[i])) {
+					opt = a;
+				}
+			}
+			if (opt == null) {
+				throw new ArgumentParserException();
+			}
+		}
+		opt = possibilities.get(0);
+
+		final boolean takesArguments = opt.takesArgument();
+		if (takesArguments) {
+			if (optarg == null) {
+				if (args.length == i + 1)
+					throw new ArgumentParserException();
+				opts.put(opt.getId(), args[i + 1]);
+				return i + 1;
+			}
+			opts.put(opt.getId(), optarg);
+			return i;
+		} else {
+			if (optarg != null)
+				throw new ArgumentParserException();
+			opts.put(opt.getId(), null);
 			return i;
 		}
 	}

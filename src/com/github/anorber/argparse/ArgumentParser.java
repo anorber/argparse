@@ -2,9 +2,10 @@ package com.github.anorber.argparse;
 
 import java.util.*;
 
-class ArgumentParser {
+class ArgumentParser implements Iterable<Option> {
 
 	private ArgumentList arguments = new ArgumentList();
+	private List<Option> optList = new ArrayList<Option>();
 	private Map<Enum<?>, String> opts = new HashMap<Enum<?>, String>();
 
 	void addArgument(Argument argument) {
@@ -39,18 +40,24 @@ class ArgumentParser {
 			final char opt = argstr.charAt(j);
 			final Argument argument = arguments.findShortOpt(opt);
 			final boolean takesArg = argument.takesArgument();
+			final Enum<?> id = argument.getId();
 			if (takesArg) {
 				if (j + 1 == length) {
 					if (args.length == i + 1)
 						throw new ArgumentParserException();
-					opts.put(argument.getId(), args[i + 1]);
+					final String argumentString = args[i + 1];
+					optList.add(new Option(id, argumentString));
+					opts.put(id, argumentString);
 					return i + 1;
 				} else {
-					opts.put(argument.getId(), argstr.substring(j + 1));
+					final String argumentString = argstr.substring(j + 1);
+					optList.add(new Option(id, argumentString));
+					opts.put(id, argumentString);
 					return i;
 				}
 			} else {
-				opts.put(argument.getId(), null);
+				optList.add(new Option(id, null));
+				opts.put(id, null);
 			}
 		}
 		return i;
@@ -86,19 +93,24 @@ class ArgumentParser {
 		opt = possibilities.get(0);
 
 		final boolean takesArguments = opt.takesArgument();
+		final Enum<?> id = opt.getId();
 		if (takesArguments) {
 			if (optarg == null) {
 				if (args.length == i + 1)
 					throw new ArgumentParserException();
-				opts.put(opt.getId(), args[i + 1]);
+				final String argumentString = args[i + 1];
+				optList.add(new Option(id, argumentString));
+				opts.put(id, argumentString);
 				return i + 1;
 			}
-			opts.put(opt.getId(), optarg);
+			optList.add(new Option(id, optarg));
+			opts.put(id, optarg);
 			return i;
 		} else {
 			if (optarg != null)
 				throw new ArgumentParserException();
-			opts.put(opt.getId(), null);
+			optList.add(new Option(id, null));
+			opts.put(id, null);
 			return i;
 		}
 	}
@@ -109,5 +121,10 @@ class ArgumentParser {
 
 	String optionArgumentString(Enum<?> option) {
 		return opts.get(option);
+	}
+
+	@Override
+	public Iterator<Option> iterator() {
+		return optList.iterator();
 	}
 }

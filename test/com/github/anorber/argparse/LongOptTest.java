@@ -8,6 +8,10 @@ import org.junit.Test;
 
 public class LongOptTest extends TestSetup {
 
+	//TODO:
+	// - Abbreviated names (--a)
+	// - Argument in option (--alpha=foo)
+
 	@Test
 	public void testParserUnknownLongOpt() {
 		//given

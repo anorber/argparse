@@ -13,7 +13,7 @@ public class NoOptTest extends TestSetup {
 		parser.parse(noArgs);
 
 		//then
-		assertThat(parser.hasOption(Option.None), is(false));
+		assertThat(parser.hasOption(OptionId.None), is(false));
 	}
 
 	@Test

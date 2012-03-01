@@ -4,9 +4,20 @@ import org.junit.Before;
 
 public class TestSetup {
 
-	protected enum Option {
+	protected enum OptionId {
 		A, B, Alpha, Beta, None, Bar, Bas
 	}
+
+	protected String[] args = new String[] {
+			"-afoo",
+			"-b",
+			"--alpha", "one",
+			"--beta",
+			"--alpha=two",
+			"--a=three",
+			"--alpha", "four",
+			"-b"
+	};
 
 	protected ArgumentParser parser;
 	protected String[] noArgs = new String[] {};
@@ -15,11 +26,11 @@ public class TestSetup {
 	@Before
 	public void setup() {
 		parser = new ArgumentParser();
-		parser.addArgument(new Argument('a', true, Option.A));
-		parser.addArgument(new Argument('b', false, Option.B));
-		parser.addArgument(new Argument("alpha", true, Option.Alpha));
-		parser.addArgument(new Argument("beta", false, Option.Beta));
-		parser.addArgument(new Argument("bas", false, Option.Bas));
-		parser.addArgument(new Argument("bar", false, Option.Bar));
+		parser.addArgument(new Argument('a', true, OptionId.A));
+		parser.addArgument(new Argument('b', false, OptionId.B));
+		parser.addArgument(new Argument("alpha", true, OptionId.Alpha));
+		parser.addArgument(new Argument("beta", false, OptionId.Beta));
+		parser.addArgument(new Argument("bas", false, OptionId.Bas));
+		parser.addArgument(new Argument("bar", false, OptionId.Bar));
 	}
 }

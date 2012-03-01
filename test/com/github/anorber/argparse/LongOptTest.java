@@ -21,9 +21,9 @@ public class LongOptTest extends TestSetup {
 		} catch (ArgumentParserException e) { }
 
 		//then
-		assertThat(parser.hasOption(Option.Alpha), is(false));
-		assertThat(parser.hasOption(Option.Beta), is(false));
-		assertThat(parser.hasOption(Option.None), is(false));
+		assertThat(parser.hasOption(OptionId.Alpha), is(false));
+		assertThat(parser.hasOption(OptionId.Beta), is(false));
+		assertThat(parser.hasOption(OptionId.None), is(false));
 	}
 
 	@Test
@@ -36,7 +36,7 @@ public class LongOptTest extends TestSetup {
 
 		//then
 		assertThat(result, is(a_b_c));
-		assertThat(parser.hasOption(Option.Beta), is(true));
+		assertThat(parser.hasOption(OptionId.Beta), is(true));
 	}
 
 	@Test
@@ -49,7 +49,7 @@ public class LongOptTest extends TestSetup {
 
 		//then
 		assertThat(result, is(a_b_c));
-		assertThat(parser.hasOption(Option.Beta), is(true));
+		assertThat(parser.hasOption(OptionId.Beta), is(true));
 	}
 
 	@Test
@@ -62,7 +62,7 @@ public class LongOptTest extends TestSetup {
 
 		//then
 		assertThat(result, is(a_b_c));
-		assertThat(parser.hasOption(Option.Alpha), is(true));
+		assertThat(parser.hasOption(OptionId.Alpha), is(true));
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class LongOptTest extends TestSetup {
 
 		//then
 		assertThat(result, is(a_b_c));
-		assertThat(parser.hasOption(Option.Alpha), is(true));
+		assertThat(parser.hasOption(OptionId.Alpha), is(true));
 	}
 
 	@Test
@@ -87,6 +87,6 @@ public class LongOptTest extends TestSetup {
 		parser.parse(args);
 
 		//then
-		assertThat(parser.hasOption(Option.Beta), is(true));
+		assertThat(parser.hasOption(OptionId.Beta), is(true));
 	}
 }

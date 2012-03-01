@@ -18,8 +18,8 @@ public class ShortOptTest extends TestSetup {
 		parser.parse(args);
 
 		//then
-		assertThat(parser.hasOption(Option.B), is(true));
-		assertThat(parser.optionArgumentString(Option.B), nullValue());
+		assertThat(parser.hasOption(OptionId.B), is(true));
+		assertThat(parser.optionArgumentString(OptionId.B), nullValue());
 	}
 
 	@Test
@@ -34,10 +34,10 @@ public class ShortOptTest extends TestSetup {
 			fail("unknown arguments should throw exception");
 		} catch (ArgumentParserException e) {
 		}
-		assertThat(parser.hasOption(Option.A), is(false));
-		assertThat(parser.hasOption(Option.B), is(false));
-		assertThat(parser.hasOption(Option.None), is(false));
-		assertThat(parser.optionArgumentString(Option.B), nullValue());
+		assertThat(parser.hasOption(OptionId.A), is(false));
+		assertThat(parser.hasOption(OptionId.B), is(false));
+		assertThat(parser.hasOption(OptionId.None), is(false));
+		assertThat(parser.optionArgumentString(OptionId.B), nullValue());
 	}
 
 	@Test
@@ -50,8 +50,8 @@ public class ShortOptTest extends TestSetup {
 
 		//then
 		assertThat(result, is(a_b_c));
-		assertThat(parser.hasOption(Option.B), is(true));
-		assertThat(parser.optionArgumentString(Option.B), nullValue());
+		assertThat(parser.hasOption(OptionId.B), is(true));
+		assertThat(parser.optionArgumentString(OptionId.B), nullValue());
 	}
 
 	@Test
@@ -64,8 +64,8 @@ public class ShortOptTest extends TestSetup {
 
 		//then
 		assertThat(result, is(a_b_c));
-		assertThat(parser.hasOption(Option.A), is(true));
-		assertThat(parser.optionArgumentString(Option.A), is("foo"));
+		assertThat(parser.hasOption(OptionId.A), is(true));
+		assertThat(parser.optionArgumentString(OptionId.A), is("foo"));
 	}
 
 	@Test
@@ -78,8 +78,8 @@ public class ShortOptTest extends TestSetup {
 
 		//then
 		assertThat(result, is(a_b_c));
-		assertThat(parser.hasOption(Option.A), is(true));
-		assertThat(parser.optionArgumentString(Option.A), is("foo"));
+		assertThat(parser.hasOption(OptionId.A), is(true));
+		assertThat(parser.optionArgumentString(OptionId.A), is("foo"));
 	}
 
 	@Test
@@ -92,9 +92,9 @@ public class ShortOptTest extends TestSetup {
 
 		//then
 		assertThat(result, is(a_b_c));
-		assertThat(parser.hasOption(Option.B), is(true));
-		assertThat(parser.hasOption(Option.A), is(true));
-		assertThat(parser.optionArgumentString(Option.B), nullValue());
-		assertThat(parser.optionArgumentString(Option.A), is("foo"));
+		assertThat(parser.hasOption(OptionId.B), is(true));
+		assertThat(parser.hasOption(OptionId.A), is(true));
+		assertThat(parser.optionArgumentString(OptionId.B), nullValue());
+		assertThat(parser.optionArgumentString(OptionId.A), is("foo"));
 	}
 }

@@ -1,6 +1,7 @@
 package com.github.anorber.argparse;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -18,6 +19,7 @@ public class ShortOptTest extends TestSetup {
 
 		//then
 		assertThat(parser.hasOption(Option.B), is(true));
+		assertThat(parser.optionArgumentString(Option.B), nullValue());
 	}
 
 	@Test
@@ -32,6 +34,10 @@ public class ShortOptTest extends TestSetup {
 			fail("unknown arguments should throw exception");
 		} catch (ArgumentParserException e) {
 		}
+		assertThat(parser.hasOption(Option.A), is(false));
+		assertThat(parser.hasOption(Option.B), is(false));
+		assertThat(parser.hasOption(Option.None), is(false));
+		assertThat(parser.optionArgumentString(Option.B), nullValue());
 	}
 
 	@Test
@@ -44,6 +50,8 @@ public class ShortOptTest extends TestSetup {
 
 		//then
 		assertThat(result, is(a_b_c));
+		assertThat(parser.hasOption(Option.B), is(true));
+		assertThat(parser.optionArgumentString(Option.B), nullValue());
 	}
 
 	@Test
@@ -56,6 +64,8 @@ public class ShortOptTest extends TestSetup {
 
 		//then
 		assertThat(result, is(a_b_c));
+		assertThat(parser.hasOption(Option.A), is(true));
+		assertThat(parser.optionArgumentString(Option.A), is("foo"));
 	}
 
 	@Test
@@ -68,6 +78,8 @@ public class ShortOptTest extends TestSetup {
 
 		//then
 		assertThat(result, is(a_b_c));
+		assertThat(parser.hasOption(Option.A), is(true));
+		assertThat(parser.optionArgumentString(Option.A), is("foo"));
 	}
 
 	@Test
@@ -80,5 +92,9 @@ public class ShortOptTest extends TestSetup {
 
 		//then
 		assertThat(result, is(a_b_c));
+		assertThat(parser.hasOption(Option.B), is(true));
+		assertThat(parser.hasOption(Option.A), is(true));
+		assertThat(parser.optionArgumentString(Option.B), nullValue());
+		assertThat(parser.optionArgumentString(Option.A), is("foo"));
 	}
 }

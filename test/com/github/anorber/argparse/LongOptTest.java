@@ -20,6 +20,9 @@ public class LongOptTest extends TestSetup {
 			fail("unknown arguments should throw exception");
 		} catch (ArgumentParserException e) {
 		}
+		assertThat(parser.hasOption(Option.Alpha), is(false));
+		assertThat(parser.hasOption(Option.Beta), is(false));
+		assertThat(parser.hasOption(Option.None), is(false));
 	}
 
 	@Test
@@ -32,6 +35,7 @@ public class LongOptTest extends TestSetup {
 
 		//then
 		assertThat(result, is(a_b_c));
+		assertThat(parser.hasOption(Option.Beta), is(true));
 	}
 
 	@Test
@@ -44,6 +48,7 @@ public class LongOptTest extends TestSetup {
 
 		//then
 		assertThat(result, is(a_b_c));
+		assertThat(parser.hasOption(Option.Alpha), is(true));
 	}
 
 	@Test

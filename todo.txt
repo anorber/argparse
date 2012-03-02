@@ -1,6 +1,21 @@
-- ArgumentParser.getArgumentStrings(E option, char delimiter)
++ ArgumentParser.getArgumentStrings(E option, char delimiter)
   to get all arguments as one string
 
-- ArgumentParser.getArguments(E option, char delimiter)
++ ArgumentParser.getArguments(E option, char delimiter)
   to split strings
 
+- do some examples
+
+- write readme file
+
+- work possibilities into exception when longopts are not unique
+
+- better javadoc komments
+
+
+
+
+Legend:
+- to do
++ done
+* canceled

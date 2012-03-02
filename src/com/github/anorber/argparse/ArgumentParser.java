@@ -18,7 +18,7 @@ public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 	 *
 	 * @param argument  an option argument
 	 */
-	public void addArgument(Argument<E> argument) {
+	public void addArgument(final Argument<E> argument) {
 		if (argument == null)
 			throw new NullPointerException();
 		arguments.add(argument);
@@ -31,50 +31,44 @@ public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 	 * @return      the rest of the args after that the opts was parsed
 	 * @throws ArgumentParserException
 	 */
-	public String[] parse(String[] args) throws ArgumentParserException {
-		int i;
-		for (i = 0; i < args.length; ++i) {
-			if (!args[i].startsWith("-"))
-				break;
-			if (args[i].equals("-"))
-				break;
-			if (!args[i].startsWith("--")) {
-				i = shortOpt(args, i);
-			} else if (args[i].equals("--")) {
-				++i;
-				break;
-			} else {
-				i = longOpt(args, i);
-			}
-		}
+	public String[] parse(final String[] args) throws ArgumentParserException {
+		int i = parseOpts(args);
 		return Arrays.copyOfRange(args, i, args.length);
 	}
 
-	private int shortOpt(String[] args, int i) throws ArgumentParserException {
-		final String argstr = args[i];
-		final int length = argstr.length();
-		for (int j = 1; j < length; ++j) {
-			final char opt = argstr.charAt(j);
-			final Argument<E> argument = arguments.findShortOpt(opt);
-			final boolean takesArg = argument.takesArgument();
-			final E id = argument.getId();
-			if (takesArg) {
-				if (j + 1 == length) {
-					if (args.length == i + 1)
-						throw new ArgumentParserException("option -" + opt + " requires argument", opt);
-					final String argumentString = args[i + 1];
-					addOption(id, argumentString);
-					return i + 1;
-				} else {
-					final String argumentString = argstr.substring(j + 1);
-					addOption(id, argumentString);
-					return i;
-				}
+	private int parseOpts(final String[] args) throws ArgumentParserException {
+		for (int i = 0; ; ++i)
+			if (i == args.length || !args[i].startsWith("-") || args[i].equals("-"))
+				return i;
+			else if (!args[i].startsWith("--"))
+				i = shortOpt(args, i);
+			else if (!args[i].equals("--"))
+				i = longOpt(args, i);
+			else
+				return i + 1;
+	}
+
+	private int shortOpt(final String[] args, final int i) throws ArgumentParserException {
+		for (int j = 1; j < args[i].length(); ++j) {
+			final char opt = args[i].charAt(j);
+			final Argument<E> arg = arguments.findShortOpt(opt);
+			if (!arg.takesArgument())
+				addOption(arg.getId(), null);
+			else if (j + 1 == args[i].length()) {
+				addOption(arg.getId(), nextArg(args, i, opt));
+				return i + 1;
 			} else {
-				addOption(id, null);
+				addOption(arg.getId(), args[i].substring(j + 1));
+				break;
 			}
 		}
 		return i;
+	}
+
+	private String nextArg(final String[] args, final int i, final char opt) throws ArgumentParserException {
+		if (args.length == i + 1)
+			throw new ArgumentParserException("option -" + opt + " requires argument", opt);
+		return args[i + 1];
 	}
 
 	private void addOption(final E id, final String argumentString) {
@@ -84,54 +78,47 @@ public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 		opts.get(id).add(argumentString);
 	}
 
-	private int longOpt(String[] args, int i) throws ArgumentParserException {
+	private int longOpt(final String[] args, final int i) throws ArgumentParserException {
 		final int j = args[i].indexOf('=');
+		if (j > 0)
+			return addLongOpt(args, i, args[i].substring(2, j), args[i].substring(j + 1));
+		else
+			return addLongOpt(args, i, args[i].substring(2), null);
+	}
 
-		final String optstr;
-		final String optarg;
-
-		if (j > 0) {
-			optstr = args[i].substring(2, j);
-			optarg = args[i].substring(j + 1);
-		} else {
-			optstr = args[i].substring(2);
-			optarg = null;
-		}
-
-		final List<Argument<E>> possibilities = arguments.findLongOpts(optstr);
-
-		Argument<E> opt = null;
-		if (possibilities.size() > 1) {
-			for (Argument<E> a : possibilities) {
-				if (a.getLongName().equals(optstr)) {
-					opt = a;
-				}
-			}
-			if (opt == null) {
-				throw new ArgumentParserException("option --" + optstr + " not a unique prefix", optstr);
-			}
-		} else {
-			opt = possibilities.get(0);
-		}
-
-		final boolean takesArguments = opt.takesArgument();
-		final E id = opt.getId();
-		if (takesArguments) {
-			if (optarg == null) {
-				if (args.length == i + 1)
-					throw new ArgumentParserException("option --" + opt.getLongName() + " requires argument", optstr);
-				final String argumentString = args[i + 1];
-				addOption(id, argumentString);
-				return i + 1;
-			}
-			addOption(id, optarg);
-			return i;
-		} else {
+	private int addLongOpt(final String[] args, final int i, final String optstr, final String optarg) throws ArgumentParserException {
+		final Argument<E> opt = findLongopt(optstr);
+		if (!opt.takesArgument())
 			if (optarg != null)
 				throw new ArgumentParserException("option --" + optstr + " must not have an argument", optstr);
-			addOption(id, null);
-			return i;
+			else
+				addOption(opt.getId(), null);
+		else if (optarg != null)
+			addOption(opt.getId(), optarg);
+		else if (args.length == i + 1)
+			throw new ArgumentParserException("option --" + opt.getLongName() + " requires argument", optstr);
+		else {
+			addOption(opt.getId(), args[i + 1]);
+			return i + 1;
 		}
+		return i;
+	}
+
+	private Argument<E> findLongopt(final String optstr) throws ArgumentParserException {
+		final List<Argument<E>> possibilities = arguments.findLongOpts(optstr);
+		if (possibilities.size() == 1)
+			return possibilities.get(0);
+		else
+			return searchPossibilities(possibilities, optstr);
+	}
+
+	private Argument<E> searchPossibilities(final List<Argument<E>> possibilities, final String optstr) throws ArgumentParserException {
+		for (final Argument<E> a : possibilities)
+			if (a.getLongName().equals(optstr))
+				return a;
+
+		//TODO: put possibilities in exception?
+		throw new ArgumentParserException("option --" + optstr + " not a unique prefix", optstr);
 	}
 
 	/**
@@ -140,7 +127,7 @@ public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 	 * @param option  enum representing an option
 	 * @return        true if this parser found the option
 	 */
-	public boolean hasOption(E option) {
+	public boolean hasOption(final E option) {
 		return opts.containsKey(option);
 	}
 
@@ -158,10 +145,28 @@ public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 	 * @param option  enum representing an option
 	 * @return        the arguments in the order they appeared
 	 */
-	public String[] getArguments(E option) {
-		List<String> opt = opts.get(option);
-		if (opt != null)
-			return opt.toArray(new String[0]);
-		return null;
+	public String[] getArguments(final E option) {
+		final List<String> opt = opts.get(option);
+		if (opt == null)
+			return null;
+		return opt.toArray(new String[0]);
+	}
+
+	String[] getArguments(final E option, final char delimiter) {
+		final List<String> buf = new ArrayList<String>();
+		for (String arg : opts.get(option))
+			for (String substr : arg.split("\\" + delimiter))
+				buf.add(substr);
+		return buf.toArray(new String[0]);
+	}
+
+	String getArgumentsString(final E option, final char delimiter) {
+		final String[] args = getArguments(option);
+		if (args.length == 0)
+			return "";
+		final StringBuilder buf = new StringBuilder(args[0]);
+		for (int i = 1; i < args.length; ++i)
+			buf.append(delimiter).append(args[i]);
+		return buf.toString();
 	}
 }

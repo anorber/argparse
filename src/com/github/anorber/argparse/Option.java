@@ -5,7 +5,7 @@ public class Option <E extends Enum<?>> {
 	final private String argument;
 	final private E id;
 
-	Option(E id, String argument) {
+	Option(final E id, final String argument) {
 		this.id = id;
 		this.argument = argument;
 	}

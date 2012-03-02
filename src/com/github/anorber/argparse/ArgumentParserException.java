@@ -4,9 +4,6 @@ public class ArgumentParserException extends Exception {
 
 	private static final long serialVersionUID = -4444608085134488658L;
 
-	ArgumentParserException() {
-	}
-
 	/**
 	 * Indicates that the ArgumentParser could not parse the args
 	 *

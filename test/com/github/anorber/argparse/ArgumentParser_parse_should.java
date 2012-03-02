@@ -17,7 +17,7 @@ public class ArgumentParser_parse_should extends TestSetup {
 		parser.parse(args);
 
 		//then
-		assertThat(parser.hasOption(OptionId.B), is(true));
+		assertThat(parser.hasOption(OptId.B), is(true));
 	}
 
 	@Test
@@ -32,9 +32,9 @@ public class ArgumentParser_parse_should extends TestSetup {
 			fail("unknown arguments should throw exception");
 		} catch (ArgumentParserException e) {
 		}
-		assertThat(parser.hasOption(OptionId.A), is(false));
-		assertThat(parser.hasOption(OptionId.B), is(false));
-		assertThat(parser.hasOption(OptionId.None), is(false));
+		assertThat(parser.hasOption(OptId.A), is(false));
+		assertThat(parser.hasOption(OptId.B), is(false));
+		assertThat(parser.hasOption(OptId.None), is(false));
 	}
 
 	@Test
@@ -47,7 +47,7 @@ public class ArgumentParser_parse_should extends TestSetup {
 
 		//then
 		assertThat(result, is(a_b_c));
-		assertThat(parser.hasOption(OptionId.B), is(true));
+		assertThat(parser.hasOption(OptId.B), is(true));
 	}
 
 	@Test
@@ -60,7 +60,7 @@ public class ArgumentParser_parse_should extends TestSetup {
 
 		//then
 		assertThat(result, is(a_b_c));
-		assertThat(parser.hasOption(OptionId.A), is(true));
+		assertThat(parser.hasOption(OptId.A), is(true));
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class ArgumentParser_parse_should extends TestSetup {
 
 		//then
 		assertThat(result, is(a_b_c));
-		assertThat(parser.hasOption(OptionId.A), is(true));
+		assertThat(parser.hasOption(OptId.A), is(true));
 	}
 
 	@Test
@@ -86,8 +86,8 @@ public class ArgumentParser_parse_should extends TestSetup {
 
 		//then
 		assertThat(result, is(a_b_c));
-		assertThat(parser.hasOption(OptionId.B), is(true));
-		assertThat(parser.hasOption(OptionId.A), is(true));
+		assertThat(parser.hasOption(OptId.B), is(true));
+		assertThat(parser.hasOption(OptId.A), is(true));
 	}
 
 
@@ -98,7 +98,7 @@ public class ArgumentParser_parse_should extends TestSetup {
 
 		//then
 		assertThat(result, is(noArgs));
-		assertThat(parser.hasOption(OptionId.None), is(false));
+		assertThat(parser.hasOption(OptId.None), is(false));
 	}
 
 	@Test
@@ -136,7 +136,7 @@ public class ArgumentParser_parse_should extends TestSetup {
 
 
 	@Test
-	public void reject_unknown_arguments() {
+	public void reject_unknown_longopts() {
 		//given
 		String[] args = new String[] {"--gamma"};
 
@@ -148,9 +148,9 @@ public class ArgumentParser_parse_should extends TestSetup {
 		} catch (ArgumentParserException e) { }
 
 		//then
-		assertThat(parser.hasOption(OptionId.Alpha), is(false));
-		assertThat(parser.hasOption(OptionId.Beta), is(false));
-		assertThat(parser.hasOption(OptionId.None), is(false));
+		assertThat(parser.hasOption(OptId.Alpha), is(false));
+		assertThat(parser.hasOption(OptId.Beta), is(false));
+		assertThat(parser.hasOption(OptId.None), is(false));
 	}
 
 	@Test
@@ -163,7 +163,7 @@ public class ArgumentParser_parse_should extends TestSetup {
 
 		//then
 		assertThat(result, is(a_b_c));
-		assertThat(parser.hasOption(OptionId.Beta), is(true));
+		assertThat(parser.hasOption(OptId.Beta), is(true));
 	}
 
 	@Test
@@ -176,7 +176,7 @@ public class ArgumentParser_parse_should extends TestSetup {
 
 		//then
 		assertThat(result, is(a_b_c));
-		assertThat(parser.hasOption(OptionId.Beta), is(true));
+		assertThat(parser.hasOption(OptId.Beta), is(true));
 	}
 
 	@Test
@@ -189,7 +189,7 @@ public class ArgumentParser_parse_should extends TestSetup {
 
 		//then
 		assertThat(result, is(a_b_c));
-		assertThat(parser.hasOption(OptionId.Alpha), is(true));
+		assertThat(parser.hasOption(OptId.Alpha), is(true));
 	}
 
 	@Test
@@ -202,7 +202,7 @@ public class ArgumentParser_parse_should extends TestSetup {
 
 		//then
 		assertThat(result, is(a_b_c));
-		assertThat(parser.hasOption(OptionId.Alpha), is(true));
+		assertThat(parser.hasOption(OptId.Alpha), is(true));
 	}
 
 	@Test
@@ -214,6 +214,6 @@ public class ArgumentParser_parse_should extends TestSetup {
 		parser.parse(args);
 
 		//then
-		assertThat(parser.hasOption(OptionId.Beta), is(true));
+		assertThat(parser.hasOption(OptId.Beta), is(true));
 	}
 }

@@ -5,7 +5,7 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
-public class ArgumentParser_getArgumentString_should extends TestSetup {
+public class ArgumentParser_getArgumentsString_should extends TestSetup {
 
 	private String[] args = new String[] {
 			"-afoo:bar",
@@ -43,5 +43,17 @@ public class ArgumentParser_getArgumentString_should extends TestSetup {
 
 		//then
 		assertThat(argumentString, is("1:2:3:4:5:6:7:8:9:10"));
+	}
+
+	@Test
+	public void return_empty_string_for_unseen_options() throws ArgumentParserException {
+		//given
+		parser.parse(args);
+
+		//when
+		final String argumentString = parser.getArgumentsString(OptId.None, ':');
+
+		//then
+		assertThat(argumentString, is(""));
 	}
 }

@@ -152,17 +152,35 @@ public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 		return opt.toArray(new String[0]);
 	}
 
+	/**
+	 * Returns all arguments for an option as an array. All strings are split
+	 * at the delimiter character.
+	 *
+	 * @param option     the option who's args we want
+	 * @param delimiter  character to use for splitting argument strings
+	 * @return           string array of arguments
+	 */
 	String[] getArguments(final E option, final char delimiter) {
 		final List<String> buf = new ArrayList<String>();
-		for (String arg : opts.get(option))
+		final List<String> options = opts.get(option);
+		if (options == null)
+			return new String[0];
+		for (String arg : options)
 			for (String substr : arg.split("\\" + delimiter))
 				buf.add(substr);
 		return buf.toArray(new String[0]);
 	}
 
-	String getArgumentsString(final E option, final char delimiter) {
+	/**
+	 * Returns all arguments for an option as a string
+	 *
+	 * @param option     the option who's args we want
+	 * @param delimiter  character to insert between arguments
+	 * @return           string of all arguments
+	 */
+	public String getArgumentsString(final E option, final char delimiter) {
 		final String[] args = getArguments(option);
-		if (args.length == 0)
+		if (args == null)
 			return "";
 		final StringBuilder buf = new StringBuilder(args[0]);
 		for (int i = 1; i < args.length; ++i)

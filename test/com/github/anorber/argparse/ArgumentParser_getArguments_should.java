@@ -63,6 +63,18 @@ public class ArgumentParser_getArguments_should extends TestSetup {
 		assertThat(arguments, is(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"}));
 	}
 
+	@Test
+	public void return_empty_array_for_unseen_opts() throws ArgumentParserException {
+		//given
+		parser.parse(args2);
+
+		//when
+		final String[] arguments = parser.getArguments(OptId.None, ':');
+
+		//then
+		assertThat(arguments, is(new String[0]));
+	}
+
 	private String[] args2 = new String[] {
 			"-afoo:bar",
 			"--alpha",

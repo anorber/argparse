@@ -4,6 +4,8 @@
 + ArgumentParser.getArguments(E option, char delimiter)
   to split strings
 
+* throw relevant exceptions in getArguments and getArgumentStrings
+
 - do some examples
 
 - write readme file
@@ -11,6 +13,7 @@
 - work possibilities into exception when longopts are not unique
 
 - better javadoc komments
+
 
 
 

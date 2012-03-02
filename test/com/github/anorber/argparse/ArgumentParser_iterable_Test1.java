@@ -9,7 +9,7 @@ import java.util.Iterator;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ArgumentParser_iterableTest extends TestSetup {
+public class ArgumentParser_iterable_Test1 extends TestSetup {
 
 	Iterator<Option<OptId>> it;
 

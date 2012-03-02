@@ -2,15 +2,10 @@ package com.github.anorber.argparse;
 
 public class Option <E extends Enum<?>> {
 
-	final private E id;
 	final private String argument;
+	final private E id;
 
-	/**TODO
-	 *
-	 * @param id
-	 * @param argument
-	 */
-	public Option(E id, String argument) {
+	Option(E id, String argument) {
 		this.id = id;
 		this.argument = argument;
 	}

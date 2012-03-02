@@ -9,13 +9,14 @@ import java.util.Map;
 
 public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 
-	private ArgumentList<E> arguments = new ArgumentList<E>();
 	private List<Option<E>> optList = new ArrayList<Option<E>>();
 	private Map<E, List<String>> opts = new HashMap<E, List<String>>();
+	private ArgumentList<E> arguments = new ArgumentList<E>();
 
-	/**TODO
+	/**
+	 * Adds an argument to this parser
 	 *
-	 * @param argument
+	 * @param argument  an option argument
 	 */
 	public void addArgument(Argument<E> argument) {
 		if (argument == null)
@@ -23,10 +24,11 @@ public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 		arguments.add(argument);
 	}
 
-	/**TODO
+	/**
+	 * Parses args for opts
 	 *
-	 * @param args
-	 * @return
+	 * @param args  the args to be parsed
+	 * @return      the rest of the args after that the opts was parsed
 	 */
 	public String[] parse(String[] args) {
 		int i;
@@ -131,21 +133,23 @@ public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 		}
 	}
 
-	/**TODO
+	/**
+	 * Tells if this parser has seen <code>option</code>
 	 *
-	 * @param option
-	 * @return
+	 * @param option  enum representing an option
+	 * @return        true if this parser found the option
 	 */
-	public boolean hasOption(Enum<?> option) {
+	public boolean hasOption(E option) {
 		return opts.containsKey(option);
 	}
 
-	/**TODO
+	/**
+	 * Returns the argument of an option if it was seen once
 	 *
-	 * @param option
-	 * @return
+	 * @param option  enum representing an option
+	 * @return        the argument as a string
 	 */
-	public String optionArgumentString(Enum<?> option) {
+	public String optionArgumentString(E option) {
 		List<String> opt = opts.get(option);
 		if (opt == null)
 			return null;
@@ -162,13 +166,14 @@ public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 		return optList.iterator();
 	}
 
-	/**TODO
+	/**
+	 * Returns an array with the arguments given to this option
 	 *
-	 * @param id
-	 * @return
+	 * @param option  enum representing an option
+	 * @return        the arguments in the order they appeared
 	 */
-	public String[] getArguments(Enum<?> id) {
-		List<String> opt = opts.get(id);
+	public String[] getArguments(E option) {
+		List<String> opt = opts.get(option);
 		if (opt != null)
 			return opt.toArray(new String[0]);
 		return null;

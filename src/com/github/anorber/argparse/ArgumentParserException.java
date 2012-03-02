@@ -1,24 +1,27 @@
 package com.github.anorber.argparse;
 
-@SuppressWarnings("serial")
 public class ArgumentParserException extends RuntimeException {
+
+	private static final long serialVersionUID = -4444608085134488658L;
 
 	ArgumentParserException() {
 	}
 
-	/**TODO
+	/**
+	 * Indicates that the ArgumentParser could not parse the args
 	 *
-	 * @param message
-	 * @param opt
+	 * @param message  error message
+	 * @param opt      the shortopt involved in the error
 	 */
 	public ArgumentParserException(String message, char opt) {
 		super(message);
 	}
 
-	/**TODO
+	/**
+	 * Indicates that the ArgumentParser could not parse the args
 	 *
-	 * @param message
-	 * @param opt
+	 * @param message  error message
+	 * @param opt      the longopt involved in the error
 	 */
 	public ArgumentParserException(String message, String opt) {
 		super(message);

@@ -1,15 +1,4 @@
-+ ArgumentParser.getArgumentStrings(E option, char delimiter) to get all
-  arguments as one string
-
-+ ArgumentParser.getArguments(E option, char delimiter) to split strings
-
-* throw relevant exceptions in getArguments and getArgumentStrings
-
-+ do some examples
-
-+ write readme file
-
-- work possibilities into exception when longopts are not unique
+- put possibilities into exception when longopts are not unique
 
 - better javadoc comments
 
@@ -17,7 +6,7 @@
 
 - define number of occurrences (1, ?, *, +)
 
-- help text?
+- print help text?
 
 - copy of ArgumentParser
 

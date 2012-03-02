@@ -1,7 +1,6 @@
 package com.github.anorber.argparse;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -14,7 +13,11 @@ public class ArgumentParser_should extends TestSetup {
 		try {
 			parser.parse(null);
 			fail("should throw exception when parsing null");
-		} catch (NullPointerException e) { }
+		} catch (ArgumentParserException e) {
+			throw new AssertionError(e);
+		} catch (NullPointerException e) {
+			// expected
+		}
 	}
 
 	@Test
@@ -123,18 +126,6 @@ public class ArgumentParser_should extends TestSetup {
 			fail("should throw exception when partial longopt has unexpected argument");
 		} catch (ArgumentParserException e) {
 			assertThat(e.getMessage(), is("option --be must not have an argument"));
-		}
-	}
-
-	@Test
-	public void throw_exception_for_options_that_occured_more_than_once() {
-		parser.parse(args);
-		try {
-			assertThat(parser.optionArgumentString(OptionId.B), nullValue());
-			fail("should only return value if there is only one string");
-		} catch (ArgumentParserException e) {
-			//FIXME!
-			assertThat(e.getMessage(), is(nullValue()));
 		}
 	}
 }

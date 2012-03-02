@@ -11,7 +11,7 @@ class ArgumentList <E extends Enum<?>> {
 		list.add(argument);
 	}
 
-	Argument<E> findShortOpt(char shortOpt) {
+	Argument<E> findShortOpt(char shortOpt) throws ArgumentParserException {
 		for (Argument<E> arg : list) {
 			if (arg.getShortName() == shortOpt) {
 				return arg;
@@ -20,7 +20,7 @@ class ArgumentList <E extends Enum<?>> {
 		throw new ArgumentParserException("option -" + shortOpt + " not recognized", shortOpt);
 	}
 
-	List<Argument<E>> findLongOpts(String longOpt) {
+	List<Argument<E>> findLongOpts(String longOpt) throws ArgumentParserException {
 		List<Argument<E>> opts = new ArrayList<Argument<E>>();
 
 		for (Argument<E> arg : list) {

@@ -1,0 +1,6 @@
+- ArgumentParser.getArgumentStrings(E option, char delimiter)
+  to get all arguments as one string
+
+- ArgumentParser.getArguments(E option, char delimiter)
+  to split strings
+

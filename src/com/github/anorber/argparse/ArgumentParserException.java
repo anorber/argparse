@@ -1,6 +1,6 @@
 package com.github.anorber.argparse;
 
-public class ArgumentParserException extends RuntimeException {
+public class ArgumentParserException extends Exception {
 
 	private static final long serialVersionUID = -4444608085134488658L;
 

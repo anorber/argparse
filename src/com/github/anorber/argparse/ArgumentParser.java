@@ -29,8 +29,9 @@ public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 	 *
 	 * @param args  the args to be parsed
 	 * @return      the rest of the args after that the opts was parsed
+	 * @throws ArgumentParserException
 	 */
-	public String[] parse(String[] args) {
+	public String[] parse(String[] args) throws ArgumentParserException {
 		int i;
 		for (i = 0; i < args.length; ++i) {
 			if (!args[i].startsWith("-"))
@@ -49,7 +50,7 @@ public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 		return Arrays.copyOfRange(args, i, args.length);
 	}
 
-	private int shortOpt(String[] args, int i) {
+	private int shortOpt(String[] args, int i) throws ArgumentParserException {
 		final String argstr = args[i];
 		final int length = argstr.length();
 		for (int j = 1; j < length; ++j) {
@@ -83,7 +84,7 @@ public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 		opts.get(id).add(argumentString);
 	}
 
-	private int longOpt(String[] args, int i) {
+	private int longOpt(String[] args, int i) throws ArgumentParserException {
 		final int j = args[i].indexOf('=');
 
 		final String optstr;
@@ -141,21 +142,6 @@ public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 	 */
 	public boolean hasOption(E option) {
 		return opts.containsKey(option);
-	}
-
-	/**
-	 * Returns the argument of an option if it was seen once
-	 *
-	 * @param option  enum representing an option
-	 * @return        the argument as a string
-	 */
-	public String optionArgumentString(E option) {
-		List<String> opt = opts.get(option);
-		if (opt == null)
-			return null;
-		if (opt.size() != 1)
-			throw new ArgumentParserException();  //FIXME
-		return opt.get(0);
 	}
 
 	/*

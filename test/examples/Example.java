@@ -1,15 +1,5 @@
-Command-line parsing library
-============================
+package examples;
 
-Java parser for command line options. It supports similar conventions
-as the Unix getopt() function (including the special meanings of arguments
-of the form "-" and "--"). Long options similar to those supported by GNU
-software may be used as well.
-
-Example usage:
---------------
-
-```Java
 import com.github.anorber.argparse.*;
 
 public class Example {
@@ -48,21 +38,3 @@ public class Example {
 			System.out.println("   " + arg);
 	}
 }
-```
-
-###Run with:
-```
-java Example -bacon --a one --bet -- -a foo
-```
-
-###Prints:
-```
-opts:
-   -b 
-   -a con
-   --alpha one
-   --beta 
-args:
-   -a
-   foo
-```

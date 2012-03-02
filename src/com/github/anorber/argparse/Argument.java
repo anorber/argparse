@@ -15,7 +15,7 @@ public class Argument <E extends Enum<?>> {
 	 * @param hasArgument  does this option take an argument
 	 * @param id           an enum that identifies this argument
 	 */
-	public Argument(String name, boolean hasArgument, E id) {
+	public Argument(final String name, final boolean hasArgument, final E id) {
 		this.longName = name;
 		this.takesArgument = hasArgument;
 		this.id = id;
@@ -28,7 +28,7 @@ public class Argument <E extends Enum<?>> {
 	 * @param hasArgument  does this option take an argument
 	 * @param id           an enum that identifies this argument
 	 */
-	public Argument(char name, boolean hasArgument, E id) {
+	public Argument(final char name, final boolean hasArgument, final E id) {
 		this.shortName = name;
 		this.takesArgument = hasArgument;
 		this.id = id;

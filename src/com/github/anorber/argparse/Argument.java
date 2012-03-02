@@ -1,20 +1,34 @@
 package com.github.anorber.argparse;
 
-class Argument <E extends Enum<?>> {
+public class Argument <E extends Enum<?>> {
 
-	private char shortName;
 	private String longName;
+	private char shortName;
 
 	private final boolean takesArgument;
 	private final E id;
 
-	Argument(String name, boolean hasArgument, E id) {
+	/**
+	 * An Argument
+	 *
+	 * @param name         longopt name
+	 * @param hasArgument  does this option take an argument
+	 * @param id           an enum that identifies this argument
+	 */
+	public Argument(String name, boolean hasArgument, E id) {
 		this.longName = name;
 		this.takesArgument = hasArgument;
 		this.id = id;
 	}
 
-	Argument(char name, boolean hasArgument, E id) {
+	/**
+	 * An argument
+	 *
+	 * @param name         shortopt name
+	 * @param hasArgument  does this option take an argument
+	 * @param id           an enum that identifies this argument
+	 */
+	public Argument(char name, boolean hasArgument, E id) {
 		this.shortName = name;
 		this.takesArgument = hasArgument;
 		this.id = id;

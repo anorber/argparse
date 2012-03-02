@@ -1,20 +1,36 @@
 package com.github.anorber.argparse;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
-class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
+public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 
-	private ArgumentList<E> arguments = new ArgumentList<E>();
 	private List<Option<E>> optList = new ArrayList<Option<E>>();
 	private Map<E, List<String>> opts = new HashMap<E, List<String>>();
+	private ArgumentList<E> arguments = new ArgumentList<E>();
 
-	void addArgument(Argument<E> argument) {
+	/**
+	 * Adds an argument to this parser
+	 *
+	 * @param argument  an option argument
+	 */
+	public void addArgument(Argument<E> argument) {
 		if (argument == null)
 			throw new NullPointerException();
 		arguments.add(argument);
 	}
 
-	String[] parse(String[] args) {
+	/**
+	 * Parses args for opts
+	 *
+	 * @param args  the args to be parsed
+	 * @return      the rest of the args after that the opts was parsed
+	 */
+	public String[] parse(String[] args) {
 		int i;
 		for (i = 0; i < args.length; ++i) {
 			if (!args[i].startsWith("-"))
@@ -117,11 +133,23 @@ class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 		}
 	}
 
-	boolean hasOption(Enum<?> option) {
+	/**
+	 * Tells if this parser has seen <code>option</code>
+	 *
+	 * @param option  enum representing an option
+	 * @return        true if this parser found the option
+	 */
+	public boolean hasOption(E option) {
 		return opts.containsKey(option);
 	}
 
-	String optionArgumentString(Enum<?> option) {
+	/**
+	 * Returns the argument of an option if it was seen once
+	 *
+	 * @param option  enum representing an option
+	 * @return        the argument as a string
+	 */
+	public String optionArgumentString(E option) {
 		List<String> opt = opts.get(option);
 		if (opt == null)
 			return null;
@@ -130,13 +158,22 @@ class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 		return opt.get(0);
 	}
 
+	/*
+	 * @see java.lang.Runnable#run()
+	 */
 	@Override
 	public Iterator<Option<E>> iterator() {
 		return optList.iterator();
 	}
 
-	String[] getArguments(Enum<?> id) {
-		List<String> opt = opts.get(id);
+	/**
+	 * Returns an array with the arguments given to this option
+	 *
+	 * @param option  enum representing an option
+	 * @return        the arguments in the order they appeared
+	 */
+	public String[] getArguments(E option) {
+		List<String> opt = opts.get(option);
 		if (opt != null)
 			return opt.toArray(new String[0]);
 		return null;

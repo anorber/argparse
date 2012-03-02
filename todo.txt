@@ -1,0 +1,24 @@
+- put possibilities into exception when longopts are not unique
+
+- better javadoc comments
+
+- optional arguments
+
+- define number of occurrences (1, ?, *, +)
+
+- print help text?
+
+- copy of ArgumentParser
+
+- better readme file
+
+
+
+
+
+
+
+Legend:
+- to do
++ done
+* canceled

@@ -4,7 +4,7 @@ import org.junit.Before;
 
 public class TestSetup {
 
-	protected enum OptionId {
+	protected enum OptId {
 		A, B, Alpha, Beta, None, Bar, Bas
 	}
 
@@ -19,18 +19,18 @@ public class TestSetup {
 			"-b"
 	};
 
-	protected ArgumentParser<OptionId> parser;
+	protected ArgumentParser<OptId> parser;
 	protected String[] noArgs = new String[] {};
 	protected String[] a_b_c = new String[] {"a", "b", "c"};
 
 	@Before
 	public void setup() {
-		parser = new ArgumentParser<OptionId>();
-		parser.addArgument(new Argument<OptionId>('a', true, OptionId.A));
-		parser.addArgument(new Argument<OptionId>('b', false, OptionId.B));
-		parser.addArgument(new Argument<OptionId>("alpha", true, OptionId.Alpha));
-		parser.addArgument(new Argument<OptionId>("beta", false, OptionId.Beta));
-		parser.addArgument(new Argument<OptionId>("bas", false, OptionId.Bas));
-		parser.addArgument(new Argument<OptionId>("bar", false, OptionId.Bar));
+		parser = new ArgumentParser<OptId>();
+		parser.addArgument(new Argument<OptId>('a', true, OptId.A));
+		parser.addArgument(new Argument<OptId>('b', false, OptId.B));
+		parser.addArgument(new Argument<OptId>("alpha", true, OptId.Alpha));
+		parser.addArgument(new Argument<OptId>("beta", false, OptId.Beta));
+		parser.addArgument(new Argument<OptId>("bas", false, OptId.Bas));
+		parser.addArgument(new Argument<OptId>("bar", false, OptId.Bar));
 	}
 }

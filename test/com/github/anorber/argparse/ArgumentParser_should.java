@@ -1,7 +1,12 @@
 package com.github.anorber.argparse;
 
+import static com.github.anorber.argparse.HasArg.NO_ARGUMENT;
+import static com.github.anorber.argparse.TestSetup.OptId.None;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
@@ -9,15 +14,11 @@ import org.junit.Test;
 public class ArgumentParser_should extends TestSetup {
 
 	@Test
-	public void not_accept_null_args() {
+	public void not_accept_null_args() throws ArgumentParserException {
 		try {
 			parser.parse(null);
 			fail("should throw exception when parsing null");
-		} catch (ArgumentParserException e) {
-			throw new AssertionError(e);
-		} catch (NullPointerException e) {
-			// expected
-		}
+		} catch (NullPointerException e) { }
 	}
 
 	@Test
@@ -127,5 +128,138 @@ public class ArgumentParser_should extends TestSetup {
 		} catch (ArgumentParserException e) {
 			assertThat(e.getMessage(), is("option --be must not have an argument"));
 		}
+	}
+
+	//TODO
+
+	@Test
+	@SuppressWarnings({ "rawtypes" })
+	public void be_equal_to_itself() {
+		//given
+		ArgumentParser parser = new ArgumentParser();
+
+		//when
+		boolean result = parser.equals(parser);
+
+		//then
+		assertTrue(result);
+	}
+
+	@Test
+	@SuppressWarnings({ "rawtypes" })
+	public void not_be_equal_to_null() {
+		//given
+		ArgumentParser parser = new ArgumentParser();
+
+		//when
+		boolean result = parser.equals(null);
+
+		//then
+		assertFalse(result);
+	}
+
+	@Test
+	@SuppressWarnings({ "rawtypes" })
+	public void not_be_equal_to_other_class() {
+		//given
+		ArgumentParser parser = new ArgumentParser();
+
+		//when
+		boolean result = parser.equals("");
+
+		//then
+		assertFalse(result);
+	}
+
+	@Test
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void not_be_equal_if_different_arguments() {
+		//given
+		ArgumentParser parser = new ArgumentParser();
+		ArgumentParser other = new ArgumentParser();
+		other.addArgument(new Argument(null, NO_ARGUMENT, None));
+
+		//when
+		boolean result = parser.equals(other);
+
+		//then
+		assertFalse(result);
+	}
+
+	@Test
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void be_equal_if_different_optMaps() throws ArgumentParserException {
+		//given
+		ArgumentParser parser = new ArgumentParser();
+		parser.addArgument(new Argument('!', NO_ARGUMENT, None));
+
+		ArgumentParser other = new ArgumentParser();
+		other.addArgument(new Argument('!', NO_ARGUMENT, None));
+		other.parse(new String[] {"-!"});
+
+		//when
+		boolean result = parser.equals(other);
+
+		//then
+		assertFalse(result);
+	}
+
+	@Test
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void not_be_equal_if_different_optsLists() throws ArgumentParserException {
+		//given
+		ArgumentParser parser = new ArgumentParser();
+		parser.addArgument(new Argument('!', NO_ARGUMENT, NO_ARGUMENT));
+		parser.addArgument(new Argument('?', NO_ARGUMENT, None));
+
+		ArgumentParser other = new ArgumentParser(parser);
+
+		parser.parse(new String[] {"-?", "-!"});
+		other.parse(new String[] {"-!", "-?"});
+
+		//when
+		boolean result = parser.equals(other);
+
+		//then
+		assertFalse(result);
+	}
+
+	@Test
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void be_equal_if_same_state() throws ArgumentParserException {
+		//given
+		ArgumentParser parser = new ArgumentParser();
+		parser.addArgument(new Argument('!', NO_ARGUMENT, NO_ARGUMENT));
+		parser.addArgument(new Argument('?', NO_ARGUMENT, None));
+
+		ArgumentParser other = new ArgumentParser(parser);
+
+		parser.parse(new String[] {"-?", "-!"});
+		other.parse(new String[] {"-?", "-!"});
+
+		//when
+		boolean result = parser.equals(other);
+
+		//then
+		assertTrue(result);
+	}
+
+	@Test
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void same_hash_code_if_equal() throws ArgumentParserException {
+		//given
+		ArgumentParser parser = new ArgumentParser();
+		parser.addArgument(new Argument('!', NO_ARGUMENT, NO_ARGUMENT));
+		parser.addArgument(new Argument('?', NO_ARGUMENT, None));
+
+		ArgumentParser other = new ArgumentParser(parser);
+
+		parser.parse(new String[] {"-?", "-!"});
+		other.parse(new String[] {"-?", "-!"});
+
+		//when
+
+		//then
+		assertEquals(parser.hashCode(), other.hashCode());
 	}
 }

@@ -10,69 +10,80 @@ public class ArgumentParser_getArguments_should extends TestSetup {
 
 	@Test
 	public void return_null_if_option_does_not_exist() throws ArgumentParserException {
+		//given
 		parser.parse(args);
-		assertThat(parser.getArguments(OptId.None), nullValue());
+
+		//when
+		final String[] result = parser.getArguments(OptId.None);
+
+		//then
+		assertThat(result, is(nullValue()));
 	}
 
 	@Test
 	public void return_embedded_shortopt_argument() throws ArgumentParserException {
+		//given
+		final String[] expected = new String[] {"foo"};
 		parser.parse(args);
-		assertThat(parser.getArguments(OptId.A), is(new String[] {"foo"}));
+
+		//when
+		final String[] result = parser.getArguments(OptId.A);
+
+		//then
+		assertThat(result, is(expected));
 	}
 
 	@Test
 	public void return_all_arguments_given_to_longopts() throws ArgumentParserException {
+		//given
+		final String[] expected = new String[] {"one", "two", "three", "four"};
 		parser.parse(args);
-		assertThat(parser.getArguments(OptId.Alpha), is(new String[] {"one", "two", "three", "four"}));
-	}
 
-	@Test
-	public void return_null_for_options_that_does_not_take_arguments() throws ArgumentParserException {
-		parser.parse(args);
-		assertThat(parser.getArguments(OptId.B), is(new String[] {null, null}));
-	}
+		//when
+		final String[] result = parser.getArguments(OptId.Alpha);
 
-	@Test
-	public void return_null_value_if_no_argument() throws ArgumentParserException {
-		parser.parse(args);
-		assertThat(parser.getArguments(OptId.Beta), is(new String[] {null}));
+		//then
+		assertThat(result, is(expected));
 	}
 
 
 	@Test
 	public void split_arguments_at_delimiter_chars_for_shortopts() throws ArgumentParserException {
 		//given
+		final String[] expected = new String[] {"foo", "bar", "bas"};
 		parser.parse(args2);
 
 		//when
-		final String[] arguments = parser.getArguments(OptId.A, ':');
+		final String[] result = parser.getArguments(OptId.A, ':');
 
 		//then
-		assertThat(arguments, is(new String[] {"foo", "bar", "bas"}));
+		assertThat(result, is(expected));
 	}
 
 	@Test
 	public void split_arguments_at_delimiter_chars_for_longopts() throws ArgumentParserException {
 		//given
+		final String[] expected = new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
 		parser.parse(args2);
 
 		//when
-		final String[] arguments = parser.getArguments(OptId.Alpha, ':');
+		final String[] result = parser.getArguments(OptId.Alpha, ':');
 
 		//then
-		assertThat(arguments, is(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"}));
+		assertThat(result, is(expected));
 	}
 
 	@Test
 	public void return_empty_array_for_unseen_opts() throws ArgumentParserException {
 		//given
+		final String[] expected = new String[0];
 		parser.parse(args2);
 
 		//when
-		final String[] arguments = parser.getArguments(OptId.None, ':');
+		final String[] result = parser.getArguments(OptId.None, ':');
 
 		//then
-		assertThat(arguments, is(new String[0]));
+		assertThat(result, is(expected));
 	}
 
 	private String[] args2 = new String[] {

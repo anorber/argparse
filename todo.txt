@@ -2,16 +2,17 @@
 
 - better javadoc comments
 
-- optional arguments
-
 - define number of occurrences (1, ?, *, +)
 
 - print help text?
 
-- copy of ArgumentParser
-
 - better readme file
 
+- javadoc for ArgumentParser constructors
+
+- change Argument.id from enum to string?
+
+- parse part of array (at least give possibility to define starting position)
 
 
 

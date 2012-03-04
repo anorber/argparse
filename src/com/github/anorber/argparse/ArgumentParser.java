@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
+public class ArgumentParser<E> implements Iterable<Option<E>> {
 
 	private final List<Option<E>> optList;
 	private final Map<E, List<String>> optMap;

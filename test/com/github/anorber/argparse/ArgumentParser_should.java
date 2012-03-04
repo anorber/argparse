@@ -1,7 +1,7 @@
 package com.github.anorber.argparse;
 
 import static com.github.anorber.argparse.HasArg.NO_ARGUMENT;
-import static com.github.anorber.argparse.TestSetup.OptId.None;
+import static com.github.anorber.argparse.TestSetup.OptId.NONE;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -177,7 +177,7 @@ public class ArgumentParser_should extends TestSetup {
 		//given
 		ArgumentParser parser = new ArgumentParser();
 		ArgumentParser other = new ArgumentParser();
-		other.addArgument(new Argument(null, NO_ARGUMENT, None));
+		other.addArgument(new Argument("", NO_ARGUMENT, NONE));
 
 		//when
 		boolean result = parser.equals(other);
@@ -191,10 +191,10 @@ public class ArgumentParser_should extends TestSetup {
 	public void be_equal_if_different_optMaps() throws ArgumentParserException {
 		//given
 		ArgumentParser parser = new ArgumentParser();
-		parser.addArgument(new Argument('!', NO_ARGUMENT, None));
+		parser.addArgument(new Argument('!', NO_ARGUMENT, NONE));
 
 		ArgumentParser other = new ArgumentParser();
-		other.addArgument(new Argument('!', NO_ARGUMENT, None));
+		other.addArgument(new Argument('!', NO_ARGUMENT, NONE));
 		other.parse(new String[] {"-!"});
 
 		//when
@@ -210,7 +210,7 @@ public class ArgumentParser_should extends TestSetup {
 		//given
 		ArgumentParser parser = new ArgumentParser();
 		parser.addArgument(new Argument('!', NO_ARGUMENT, NO_ARGUMENT));
-		parser.addArgument(new Argument('?', NO_ARGUMENT, None));
+		parser.addArgument(new Argument('?', NO_ARGUMENT, NONE));
 
 		ArgumentParser other = new ArgumentParser(parser);
 
@@ -230,7 +230,7 @@ public class ArgumentParser_should extends TestSetup {
 		//given
 		ArgumentParser parser = new ArgumentParser();
 		parser.addArgument(new Argument('!', NO_ARGUMENT, NO_ARGUMENT));
-		parser.addArgument(new Argument('?', NO_ARGUMENT, None));
+		parser.addArgument(new Argument('?', NO_ARGUMENT, NONE));
 
 		ArgumentParser other = new ArgumentParser(parser);
 
@@ -250,7 +250,7 @@ public class ArgumentParser_should extends TestSetup {
 		//given
 		ArgumentParser parser = new ArgumentParser();
 		parser.addArgument(new Argument('!', NO_ARGUMENT, NO_ARGUMENT));
-		parser.addArgument(new Argument('?', NO_ARGUMENT, None));
+		parser.addArgument(new Argument('?', NO_ARGUMENT, NONE));
 
 		ArgumentParser other = new ArgumentParser(parser);
 

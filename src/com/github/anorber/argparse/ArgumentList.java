@@ -3,7 +3,7 @@ package com.github.anorber.argparse;
 import java.util.ArrayList;
 import java.util.List;
 
-class ArgumentList <E extends Enum<?>> {
+class ArgumentList <E> {
 
 	private final List<Argument<E>> list;
 

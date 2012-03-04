@@ -45,7 +45,7 @@ public class ArgumentParser_iterable_Test1 extends TestSetup {
 		Option<OptId> opt = iterations(3);
 
 		//then
-		assertThat(opt.getId(), is(OptId.Alpha));
+		assertThat(opt.getId(), is(OptId.ALPHA));
 		assertThat(opt.getArgument(), is("one"));
 	}
 
@@ -55,7 +55,7 @@ public class ArgumentParser_iterable_Test1 extends TestSetup {
 		Option<OptId> opt = iterations(4);
 
 		//then
-		assertThat(opt.getId(), is(OptId.Beta));
+		assertThat(opt.getId(), is(OptId.BETA));
 	}
 
 	@Test
@@ -64,7 +64,7 @@ public class ArgumentParser_iterable_Test1 extends TestSetup {
 		Option<OptId> opt = iterations(5);
 
 		//then
-		assertThat(opt.getId(), is(OptId.Alpha));
+		assertThat(opt.getId(), is(OptId.ALPHA));
 		assertThat(opt.getArgument(), is("two"));
 	}
 
@@ -74,7 +74,7 @@ public class ArgumentParser_iterable_Test1 extends TestSetup {
 		Option<OptId> opt = iterations(6);
 
 		//then
-		assertThat(opt.getId(), is(OptId.Alpha));
+		assertThat(opt.getId(), is(OptId.ALPHA));
 		assertThat(opt.getArgument(), is("three"));
 	}
 
@@ -84,7 +84,7 @@ public class ArgumentParser_iterable_Test1 extends TestSetup {
 		Option<OptId> opt = iterations(7);
 
 		//then
-		assertThat(opt.getId(), is(OptId.Alpha));
+		assertThat(opt.getId(), is(OptId.ALPHA));
 		assertThat(opt.getArgument(), is("four"));
 	}
 

@@ -39,7 +39,7 @@ public class ArgumentParser_getArgumentsString_should extends TestSetup {
 		parser.parse(args);
 
 		//when
-		final String argumentString = parser.getArgumentsString(OptId.Alpha, ':');
+		final String argumentString = parser.getArgumentsString(OptId.ALPHA, ':');
 
 		//then
 		assertThat(argumentString, is("1:2:3:4:5:6:7:8:9:10"));
@@ -51,7 +51,7 @@ public class ArgumentParser_getArgumentsString_should extends TestSetup {
 		parser.parse(args);
 
 		//when
-		final String argumentString = parser.getArgumentsString(OptId.None, ':');
+		final String argumentString = parser.getArgumentsString(OptId.NONE, ':');
 
 		//then
 		assertThat(argumentString, is(""));

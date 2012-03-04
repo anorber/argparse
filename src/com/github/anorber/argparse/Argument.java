@@ -1,7 +1,7 @@
 package com.github.anorber.argparse;
 
 
-public class Argument <E extends Enum<?>> {
+public class Argument <E> {
 
 	private final String longName;
 	private final char shortName;
@@ -17,7 +17,7 @@ public class Argument <E extends Enum<?>> {
 	 * @param id      an enum that identifies this argument
 	 */
 	public Argument(final String name, final HasArg hasArg, final E id) {
-		this('\0', name, hasArg, id);
+		this('\0', name.toString(), hasArg, id);
 	}
 
 	/**

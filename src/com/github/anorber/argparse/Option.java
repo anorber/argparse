@@ -1,6 +1,6 @@
 package com.github.anorber.argparse;
 
-public class Option <E extends Enum<?>> {
+public class Option <E> {
 
 	final private String argument;
 	final private E id;
@@ -46,13 +46,11 @@ public class Option <E extends Enum<?>> {
 		if (getClass() != obj.getClass())
 			return false;
 		Option<?> other = (Option<?>)obj;
-
 		if (argument == null) {
 			if (other.argument != null)
 				return false;
 		} else if (!argument.equals(other.argument))
 			return false;
-
 		return id.equals(other.id);
 	}
 }

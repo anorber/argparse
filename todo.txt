@@ -10,7 +10,7 @@
 
 - javadoc for ArgumentParser constructors
 
-- change Argument.id from enum to string?
++ change Argument.id from enum to Object
 
 - parse part of array (at least give possibility to define starting position)
 

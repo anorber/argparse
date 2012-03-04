@@ -1,5 +1,9 @@
 package com.github.anorber.argparse;
 
+import static com.github.anorber.argparse.HasArg.NO_ARGUMENT;
+import static com.github.anorber.argparse.HasArg.OPTIONAL_ARGUMENT;
+import static com.github.anorber.argparse.HasArg.REQUIRED_ARGUMENT;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -9,9 +13,29 @@ import java.util.Map;
 
 public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 
-	private List<Option<E>> optList = new ArrayList<Option<E>>();
-	private Map<E, List<String>> opts = new HashMap<E, List<String>>();
-	private ArgumentList<E> arguments = new ArgumentList<E>();
+	private final List<Option<E>> optList;
+	private final Map<E, List<String>> optMap;
+	private final ArgumentList<E> arguments;
+
+	/**
+	 * TODO
+	 */
+	public ArgumentParser() {
+		optList = new ArrayList<Option<E>>();
+		optMap = new HashMap<E, List<String>>();
+		arguments = new ArgumentList<E>();
+	}
+
+	/**
+	 * TODO
+	 *
+	 * @param other
+	 */
+	ArgumentParser(ArgumentParser<E> other) {
+		optList = new ArrayList<Option<E>>(other.optList);
+		optMap = new HashMap<E, List<String>>(other.optMap);
+		arguments = new ArgumentList<E>(other.arguments);
+	}
 
 	/**
 	 * Adds an argument to this parser
@@ -52,11 +76,11 @@ public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 		for (int j = 1; j < args[i].length(); ++j) {
 			final char opt = args[i].charAt(j);
 			final Argument<E> arg = arguments.findShortOpt(opt);
-			if (!arg.takesArgument())
-				addOption(arg.getId(), null);
-			else if (j + 1 == args[i].length()) {
+			if (j + 1 == args[i].length() && arg.hasArg() == REQUIRED_ARGUMENT) {
 				addOption(arg.getId(), nextArg(args, i, opt));
 				return i + 1;
+			} else if (arg.hasArg() == NO_ARGUMENT) {
+				addOption(arg.getId(), null);
 			} else {
 				addOption(arg.getId(), args[i].substring(j + 1));
 				break;
@@ -73,9 +97,9 @@ public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 
 	private void addOption(final E id, final String argumentString) {
 		optList.add(new Option<E>(id, argumentString));
-		if (!opts.containsKey(id))
-			opts.put(id, new ArrayList<String>());
-		opts.get(id).add(argumentString);
+		if (!optMap.containsKey(id))
+			optMap.put(id, new ArrayList<String>());
+		optMap.get(id).add(argumentString);
 	}
 
 	private int longOpt(final String[] args, final int i) throws ArgumentParserException {
@@ -88,7 +112,9 @@ public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 
 	private int addLongOpt(final String[] args, final int i, final String optstr, final String optarg) throws ArgumentParserException {
 		final Argument<E> opt = findLongopt(optstr);
-		if (!opt.takesArgument())
+		if (opt.hasArg() == OPTIONAL_ARGUMENT)
+			addOption(opt.getId(), optarg == null ? "" : optarg);
+		else if (opt.hasArg() == NO_ARGUMENT)
 			if (optarg != null)
 				throw new ArgumentParserException("option --" + optstr + " must not have an argument", optstr);
 			else
@@ -128,7 +154,7 @@ public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 	 * @return        true if this parser found the option
 	 */
 	public boolean hasOption(final E option) {
-		return opts.containsKey(option);
+		return optMap.containsKey(option);
 	}
 
 	/*
@@ -146,7 +172,7 @@ public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 	 * @return        the arguments in the order they appeared
 	 */
 	public String[] getArguments(final E option) {
-		final List<String> opt = opts.get(option);
+		final List<String> opt = optMap.get(option);
 		if (opt == null)
 			return null;
 		return opt.toArray(new String[0]);
@@ -162,7 +188,7 @@ public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 	 */
 	String[] getArguments(final E option, final char delimiter) {
 		final List<String> buf = new ArrayList<String>();
-		final List<String> options = opts.get(option);
+		final List<String> options = optMap.get(option);
 		if (options == null)
 			return new String[0];
 		for (String arg : options)
@@ -186,5 +212,29 @@ public class ArgumentParser<E extends Enum<?>> implements Iterable<Option<E>> {
 		for (int i = 1; i < args.length; ++i)
 			buf.append(delimiter).append(args[i]);
 		return buf.toString();
+	}
+
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return arguments.hashCode() ^ optList.hashCode() ^ optMap.hashCode();
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ArgumentParser<?> other = (ArgumentParser<?>)obj;
+		return arguments.equals(other.arguments) && optMap.equals(other.optMap) && optList.equals(other.optList);
 	}
 }

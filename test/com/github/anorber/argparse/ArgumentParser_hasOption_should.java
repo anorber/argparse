@@ -1,5 +1,6 @@
 package com.github.anorber.argparse;
 
+import static com.github.anorber.argparse.HasArg.NO_ARGUMENT;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -39,7 +40,7 @@ public class ArgumentParser_hasOption_should extends TestSetup {
 
 	@Test
 	public void recognize_longopts_that_is_substring_of_other_longopt() throws ArgumentParserException {
-		parser.addArgument(new Argument<OptId>("bastu", false, null));
+		parser.addArgument(new Argument<OptId>("bastu", NO_ARGUMENT, OptId.None));
 		parser.parse(new String[] {"--bas"});
 		assertThat(parser.hasOption(OptId.Bas), is(true));
 	}

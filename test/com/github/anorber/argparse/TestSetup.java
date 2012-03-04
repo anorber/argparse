@@ -1,5 +1,8 @@
 package com.github.anorber.argparse;
 
+import static com.github.anorber.argparse.HasArg.NO_ARGUMENT;
+import static com.github.anorber.argparse.HasArg.REQUIRED_ARGUMENT;
+
 import org.junit.Before;
 
 public class TestSetup {
@@ -26,11 +29,11 @@ public class TestSetup {
 	@Before
 	public void setup() {
 		parser = new ArgumentParser<OptId>();
-		parser.addArgument(new Argument<OptId>('a', true, OptId.A));
-		parser.addArgument(new Argument<OptId>('b', false, OptId.B));
-		parser.addArgument(new Argument<OptId>("alpha", true, OptId.Alpha));
-		parser.addArgument(new Argument<OptId>("beta", false, OptId.Beta));
-		parser.addArgument(new Argument<OptId>("bas", false, OptId.Bas));
-		parser.addArgument(new Argument<OptId>("bar", false, OptId.Bar));
+		parser.addArgument(new Argument<OptId>('a', REQUIRED_ARGUMENT, OptId.A));
+		parser.addArgument(new Argument<OptId>('b', NO_ARGUMENT, OptId.B));
+		parser.addArgument(new Argument<OptId>("alpha", REQUIRED_ARGUMENT, OptId.Alpha));
+		parser.addArgument(new Argument<OptId>("beta", NO_ARGUMENT, OptId.Beta));
+		parser.addArgument(new Argument<OptId>("bas", NO_ARGUMENT, OptId.Bas));
+		parser.addArgument(new Argument<OptId>("bar", NO_ARGUMENT, OptId.Bar));
 	}
 }

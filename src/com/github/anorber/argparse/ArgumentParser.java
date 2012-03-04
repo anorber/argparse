@@ -42,7 +42,7 @@ public class ArgumentParser<E> implements Iterable<Option<E>> {
 	 *
 	 * @param argument  an option argument
 	 */
-	public void addArgument(final Argument<E> argument) {
+	public void addArgument(final Argument<? extends E> argument) {
 		if (argument == null)
 			throw new NullPointerException();
 		arguments.add(argument);
@@ -75,7 +75,7 @@ public class ArgumentParser<E> implements Iterable<Option<E>> {
 	private int shortOpt(final String[] args, final int i) throws ArgumentParserException {
 		for (int j = 1; j < args[i].length(); ++j) {
 			final char opt = args[i].charAt(j);
-			final Argument<E> arg = arguments.findShortOpt(opt);
+			final Argument<? extends E> arg = arguments.findShortOpt(opt);
 			if (j + 1 == args[i].length() && arg.hasArg() == REQUIRED_ARGUMENT) {
 				addOption(arg.getId(), nextArg(args, i, opt));
 				return i + 1;
@@ -111,7 +111,7 @@ public class ArgumentParser<E> implements Iterable<Option<E>> {
 	}
 
 	private int addLongOpt(final String[] args, final int i, final String optstr, final String optarg) throws ArgumentParserException {
-		final Argument<E> opt = findLongopt(optstr);
+		final Argument<? extends E> opt = findLongopt(optstr);
 		if (opt.hasArg() == OPTIONAL_ARGUMENT)
 			addOption(opt.getId(), optarg == null ? "" : optarg);
 		else if (opt.hasArg() == NO_ARGUMENT)
@@ -130,16 +130,16 @@ public class ArgumentParser<E> implements Iterable<Option<E>> {
 		return i;
 	}
 
-	private Argument<E> findLongopt(final String optstr) throws ArgumentParserException {
-		final List<Argument<E>> possibilities = arguments.findLongOpts(optstr);
+	private Argument<? extends E> findLongopt(final String optstr) throws ArgumentParserException {
+		final List<Argument<? extends E>> possibilities = arguments.findLongOpts(optstr);
 		if (possibilities.size() == 1)
 			return possibilities.get(0);
 		else
 			return searchPossibilities(possibilities, optstr);
 	}
 
-	private Argument<E> searchPossibilities(final List<Argument<E>> possibilities, final String optstr) throws ArgumentParserException {
-		for (final Argument<E> a : possibilities)
+	private Argument<? extends E> searchPossibilities(final List<Argument<? extends E>> possibilities, final String optstr) throws ArgumentParserException {
+		for (final Argument<? extends E> a : possibilities)
 			if (a.getLongName().equals(optstr))
 				return a;
 

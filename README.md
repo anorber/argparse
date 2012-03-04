@@ -10,18 +10,21 @@ Example usage:
 --------------
 
 ```Java
+import static com.github.anorber.argparse.HasArg.*;
+import static examples.Example.Op.*;
+
 import com.github.anorber.argparse.*;
 
 public class Example {
 
-	static enum Op { A, B, Alpha, Beta }
+	static enum Op { A, B, ALPHA, BETA }
 
 	public static void main(String[] args) throws ArgumentParserException {
 		ArgumentParser<Op> parser = new ArgumentParser<Op>();
-		parser.addArgument(new Argument<Op>('a', true, Op.A));
-		parser.addArgument(new Argument<Op>('b', false, Op.B));
-		parser.addArgument(new Argument<Op>("alpha", true, Op.Alpha));
-		parser.addArgument(new Argument<Op>("beta", false, Op.Beta));
+		parser.addArgument(new Argument<Op>('a', REQUIRED_ARGUMENT, A));
+		parser.addArgument(new Argument<Op>('b', NO_ARGUMENT, B));
+		parser.addArgument(new Argument<Op>("alpha", REQUIRED_ARGUMENT, ALPHA));
+		parser.addArgument(new Argument<Op>("beta", NO_ARGUMENT, BETA));
 
 		args = parser.parse(args);
 
@@ -34,10 +37,10 @@ public class Example {
 			case B:
 				System.out.println("   -b ");
 				break;
-			case Alpha:
+			case ALPHA:
 				System.out.println("   --alpha " + opt.getArgument());
 				break;
-			case Beta:
+			case BETA:
 				System.out.println("   --beta ");
 				break;
 			}

@@ -27,10 +27,10 @@ public class ExampleTest {
 		};
 		String expected = "" +
 				"opts:\n" +
-				"   -b \n" +
+				"   -b\n" +
 				"   -a con\n" +
 				"   --alpha one\n" +
-				"   --beta \n" +
+				"   --beta\n" +
 				"args:\n" +
 				"   -a\n" +
 				"   foo\n";

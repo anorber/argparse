@@ -18,7 +18,7 @@ public class Option_should {
 		try {
 			new Option<OptId>(null, "");
 			fail();
-		} catch (NullPointerException e) { }
+		} catch (IllegalArgumentException e) { }
 	}
 
 	@Test

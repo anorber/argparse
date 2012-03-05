@@ -3,6 +3,7 @@ package com.github.anorber.argparse;
 import static com.github.anorber.argparse.HasArg.NO_ARGUMENT;
 import static com.github.anorber.argparse.TestSetup.OptId.NONE;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
@@ -15,10 +16,7 @@ public class ArgumentParser_should extends TestSetup {
 
 	@Test
 	public void not_accept_null_args() throws ArgumentParserException {
-		try {
-			parser.parse(null);
-			fail("should throw exception when parsing null");
-		} catch (NullPointerException e) { }
+		assertThat(parser.parse(null), is(nullValue()));
 	}
 
 	@Test
@@ -26,7 +24,7 @@ public class ArgumentParser_should extends TestSetup {
 		try {
 			parser.addArgument(null);
 			fail("should throw exception when adding null argument");
-		} catch (NullPointerException e) { }
+		} catch (IllegalArgumentException e) { }
 	}
 
 

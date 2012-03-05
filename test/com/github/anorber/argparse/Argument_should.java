@@ -18,9 +18,9 @@ public class Argument_should {
 	@Test
 	public void not_accept_null_hasArg() {
 		try {
-			new Argument<OptId>('\0', null, NONE);
+			new Argument<OptId>('\1', null, NONE);
 			fail("should not accept null hasArg");
-		} catch (NullPointerException e) { }
+		} catch (IllegalArgumentException e) { }
 	}
 
 	@Test
@@ -28,7 +28,7 @@ public class Argument_should {
 		try {
 			new Argument<OptId>(null, NO_ARGUMENT, NONE);
 			fail();
-		} catch (NullPointerException e) { }
+		} catch (IllegalArgumentException e) { }
 	}
 
 	@Test
@@ -36,7 +36,7 @@ public class Argument_should {
 		try {
 			new Argument<TestSetup.OptId>("", NO_ARGUMENT, null);
 			fail("should not accept null id");
-		} catch (NullPointerException e) { }
+		} catch (IllegalArgumentException e) { }
 	}
 
 	@Test

@@ -17,7 +17,7 @@ public class Argument <E> {
 	 * @param id      an enum that identifies this argument
 	 */
 	public Argument(final String name, final HasArg hasArg, final E id) {
-		this('\0', name.toString(), hasArg, id);
+		this(-1, name, hasArg, id);
 	}
 
 	/**
@@ -31,12 +31,14 @@ public class Argument <E> {
 		this(name, null, hasArg, id);
 	}
 
-	private Argument(final char shortName, final String longName, final HasArg takesArgument, final E id) {
+	private Argument(final int shortName, final String longName, final HasArg takesArgument, final E id) {
+		if (longName == null && shortName == -1)
+			throw new IllegalArgumentException("name should not be null");
 		if (takesArgument == null)
-			throw new NullPointerException();
+			throw new IllegalArgumentException("takesArgument should not be null");
 		if (id == null)
-			throw new NullPointerException();
-		this.shortName = shortName;
+			throw new IllegalArgumentException("id should not be null");
+		this.shortName = (char) shortName;
 		this.longName = longName;
 		this.hasArg = takesArgument;
 		this.id = id;
@@ -65,7 +67,7 @@ public class Argument <E> {
 	 */
 	@Override
 	public int hashCode() {
-		final int i = longName != null ? longName.hashCode() : 0;
+		final int i = longName == null ? 0 : longName.hashCode();
 		return shortName ^ hasArg.hashCode() ^ id.hashCode() ^ i;
 	}
 
@@ -73,23 +75,16 @@ public class Argument <E> {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
+	public boolean equals(final Object obj) {
+		if (obj == null || !(obj instanceof Argument))
 			return false;
-		if (!(obj instanceof Argument))
-			return false;
-		Argument<?> other = (Argument<?>)obj;
-		if (hasArg != other.hasArg)
-			return false;
-		if (!id.equals(other.id))
-			return false;
+		final Argument<?> other = (Argument<?>)obj;
 		if (longName == null) {
 			if (other.longName != null)
 				return false;
-		} else if (!longName.equals(other.longName))
+		} else if (!longName.equals(other.longName)) {
 			return false;
-		return shortName == other.shortName;
+		}
+		return shortName == other.shortName && hasArg == other.hasArg && id.equals(other.id);
 	}
 }

@@ -14,7 +14,7 @@ public class ArgumentParser_iterable_Test1 extends TestSetup {
 	Iterator<Option<OptId>> it;
 
 	@Before
-	public void setUp() throws ArgumentParserException {
+	public void init() throws ArgumentParserException {
 		//given
 		parser.parse(args);
 		it = parser.iterator();

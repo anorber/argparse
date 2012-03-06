@@ -18,7 +18,7 @@ public class Example {
 		for (Option<String> opt : parser) {
 			System.out.print("   " + opt.getId());
 			String arg = opt.getArgument();
-			if (arg != null)
+//			if (arg != null)
 				System.out.print(" " + arg);
 			System.out.println();
 		}

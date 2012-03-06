@@ -58,6 +58,8 @@ public class Argument <E> {
 	}
 
 	String getLongName() {
+		if (longName == null)
+			return "";
 		return longName;
 	}
 

@@ -1,7 +1,6 @@
 package com.github.anorber.argparse;
 
 import static com.github.anorber.argparse.HasArg.NO_ARGUMENT;
-import static com.github.anorber.argparse.HasArg.OPTIONAL_ARGUMENT;
 import static com.github.anorber.argparse.HasArg.REQUIRED_ARGUMENT;
 
 import java.util.ArrayList;
@@ -37,51 +36,48 @@ class ArgumentList<E> {
 		list.add(argument);
 	}
 
-	private int addLongOpt(final String[] args, final int i, final String optstr, final String optarg) throws ArgumentParserException {
-		final Argument<? extends E> opt = findLongopt(optstr);
-		if (opt.hasArg() == OPTIONAL_ARGUMENT) {
-			foundOpts.addOption(opt.getId(), optarg == null ? "" : optarg);
-		} else if (opt.hasArg() == NO_ARGUMENT) {
-			if (optarg == null) {
-				foundOpts.addOption(opt.getId(), null);
-			} else {
-				throw new ArgumentParserException("option --" + optstr + " must not have an argument", optstr);
+	int parseOpts(final String[] args) throws ArgumentParserException {
+		int i;
+		for (i = 0; i < args.length; ++i) {
+			final String arg = args[i];
+			if (!arg.startsWith("-") || arg.equals("-")) {
+				return i;
 			}
-		} else if (args.length == i + 1) {
-			throw new ArgumentParserException("option --" + opt.getLongName() + " requires argument", optstr);
-		} else if (optarg == null) {
-			foundOpts.addOption(opt.getId(), args[i + 1]);
-			return i + 1;
-		} else {
-			foundOpts.addOption(opt.getId(), optarg);
+			if (arg.equals("--")) {
+				return i + 1;
+			}
+			if (arg.startsWith("--")) {
+				i = longOpt(args, i);
+			} else {
+				i = shortOpt(args, i);
+			}
 		}
 		return i;
 	}
 
-	private Argument<? extends E> findLongopt(final String optstr) throws ArgumentParserException {
-		final List<Argument<? extends E>> possibilities = findLongOpts(optstr);
-		if (possibilities.size() == 1) {
-			return possibilities.get(0);
-		} else {
-			return searchPossibilities(possibilities, optstr);
-		}
-	}
 
-	private List<Argument<? extends E>> findLongOpts(final String longOpt) throws ArgumentParserException {
-		final List<Argument<? extends E>> opts = new ArrayList<Argument<? extends E>>();
-		for (final Argument<? extends E> arg : list) {
-			final String longName = arg.getLongName();
-			if (longName == null) {
-				continue;
+	private int shortOpt(final String[] args, final int i) throws ArgumentParserException {
+		final String arg = args[i];
+		final int length = arg.length();
+		for (int j = 1; j < length; ++j) {
+			final char opt = arg.charAt(j);
+			final Argument<? extends E> argument = findShortOpt(opt);
+			final HasArg hasArg = argument.hasArg();
+			if (j + 1 == length && hasArg == REQUIRED_ARGUMENT) {
+				if (args.length == i + 1) {
+					throw new ArgumentParserException("option -" + opt + " requires argument", opt);
+				}
+				foundOpts.addOption(argument.getId(), args[i + 1]);
+				return i + 1;
 			}
-			if (longName.startsWith(longOpt)) {
-				opts.add(arg);
+			if (hasArg == NO_ARGUMENT) {
+				foundOpts.addOption(argument.getId(), "");
+			} else {
+				foundOpts.addOption(argument.getId(), arg.substring(j + 1));
+				return i;
 			}
 		}
-		if (opts.isEmpty()) {
-			throw new ArgumentParserException("option --" + longOpt + " not recognized", longOpt);
-		}
-		return opts;
+		return i;
 	}
 
 	private Argument<? extends E> findShortOpt(final char shortOpt) throws ArgumentParserException {
@@ -94,62 +90,50 @@ class ArgumentList<E> {
 	}
 
 	private int longOpt(final String[] args, final int i) throws ArgumentParserException {
-		final int j = args[i].indexOf('=');
-		if (j > 0) {
-			return addLongOpt(args, i, args[i].substring(2, j), args[i].substring(j + 1));
+		final String nextArg = args[i];
+		final boolean has_arg = nextArg.contains("=");
+		final String optstr = has_arg ? nextArg.substring(2, nextArg.indexOf('=')) : nextArg.substring(2);
+		final Argument<? extends E> opt = findLongopt(optstr);
+		if (has_arg) {
+			if (opt.hasArg() == NO_ARGUMENT) {
+				throw new ArgumentParserException("option --" + optstr + " must not have an argument", optstr);
+			}
+			foundOpts.addOption(opt.getId(), nextArg.substring(nextArg.indexOf('=') + 1));
+			return i;
+		}
+		if (opt.hasArg() == REQUIRED_ARGUMENT) {
+			if (args.length == i + 1) {
+				throw new ArgumentParserException("option --" + opt.getLongName() + " requires argument", optstr);
+			}
+			foundOpts.addOption(opt.getId(), args[i + 1]);
+			return i + 1;
 		} else {
-			return addLongOpt(args, i, args[i].substring(2), null);
+			foundOpts.addOption(opt.getId(), "");
+			return i;
 		}
 	}
 
-	private String nextArg(final String[] args, final int i, final char opt) throws ArgumentParserException {
-		if (args.length == i + 1) {
-			throw new ArgumentParserException("option -" + opt + " requires argument", opt);
-		}
-		return args[i + 1];
-	}
-
-	int parseOpts(final String[] args) throws ArgumentParserException {
-		for (int i = 0;; ++i) {
-			if (i == args.length || !args[i].startsWith("-") || args[i].equals("-")) {
-				return i;
-			} else if (!args[i].startsWith("--")) {
-				i = shortOpt(args, i);
-			} else if (!args[i].equals("--")) {
-				i = longOpt(args, i);
-			} else {
-				return i + 1;
+	private Argument<? extends E> findLongopt(final String optstr) throws ArgumentParserException {
+		final List<Argument<? extends E>> opts = new ArrayList<Argument<? extends E>>();
+		for (final Argument<? extends E> arg : list) {
+			final String longName = arg.getLongName();
+			if (longName.equals(optstr)) {
+				return arg;
+			}
+			if (longName.startsWith(optstr)) {
+				opts.add(arg);
 			}
 		}
-	}
-
-	private Argument<? extends E> searchPossibilities(final List<Argument<? extends E>> possibilities, final String optstr) throws ArgumentParserException {
-		for (final Argument<? extends E> a : possibilities) {
-			if (a.getLongName().equals(optstr)) {
-				return a;
-			}
+		if (opts.size() == 1) {
+			return opts.get(0);
 		}
-
+		if (opts.isEmpty()) {
+			throw new ArgumentParserException("option --" + optstr + " not recognized", optstr);
+		}
 		// TODO: put possibilities in exception?
 		throw new ArgumentParserException("option --" + optstr + " not a unique prefix", optstr);
 	}
 
-	private int shortOpt(final String[] args, final int i) throws ArgumentParserException {
-		for (int j = 1; j < args[i].length(); ++j) {
-			final char opt = args[i].charAt(j);
-			final Argument<? extends E> arg = findShortOpt(opt);
-			if (j + 1 == args[i].length() && arg.hasArg() == REQUIRED_ARGUMENT) {
-				foundOpts.addOption(arg.getId(), nextArg(args, i, opt));
-				return i + 1;
-			} else if (arg.hasArg() == NO_ARGUMENT) {
-				foundOpts.addOption(arg.getId(), null);
-			} else {
-				foundOpts.addOption(arg.getId(), args[i].substring(j + 1));
-				break;
-			}
-		}
-		return i;
-	}
 
 	/* (non-Javadoc)
 	 *

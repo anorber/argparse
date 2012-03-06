@@ -4,9 +4,10 @@ package com.github.anorber.argparse;
  *
  * @author anorber
  */
+@SuppressWarnings("serial")
 public class ArgumentParserException extends Exception {
 
-	private static final long serialVersionUID = -4444608085134488658L;
+	private final String opt;
 
 	/**
 	 * Indicates that the ArgumentParser could not parse the args.
@@ -16,6 +17,7 @@ public class ArgumentParserException extends Exception {
 	 */
 	public ArgumentParserException(final String message, final char opt) {
 		super(message);
+		this.opt = "" + opt;
 	}
 
 	/**
@@ -26,5 +28,13 @@ public class ArgumentParserException extends Exception {
 	 */
 	public ArgumentParserException(final String message, final String opt) {
 		super(message);
+		this.opt = opt;
+	}
+
+	/**
+	 * @return the opt
+	 */
+	public String getOpt() {
+		return opt;
 	}
 }

@@ -70,6 +70,7 @@ public class ArgumentParser_should extends TestSetup {
 			fail("should throw exception if partial longopt lacks argument");
 		} catch (ArgumentParserException e) {
 			assertThat(e.getMessage(), is("option --alpha requires argument"));
+			assertThat(e.getOpt(), is("a"));
 		}
 	}
 

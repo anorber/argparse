@@ -1,13 +1,19 @@
 package com.github.anorber.argparse;
 
+/**
+ * @author anorber
+ *
+ * @param <E>
+ */
 public class Option <E> {
 
-	final private String arg;
-	final private E id;
+	private final String arg;
+	private final E id;
 
 	Option(final E id, final String argument) {
-		if (id == null)
+		if (id == null) {
 			throw new IllegalArgumentException("id should not be null");
+		}
 		this.id = id;
 		this.arg = argument;
 	}
@@ -39,18 +45,17 @@ public class Option <E> {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final Option<?> other = (Option<?>)obj;
-		if (arg == null) {
-			if (other.arg != null)
+		if (obj instanceof Option) {
+			final Option<?> other = (Option<?>) obj;
+			if (arg == null) {
+				if (other.arg != null) {
+					return false;
+				}
+			} else if (!arg.equals(other.arg)) {
 				return false;
-		} else if (!arg.equals(other.arg))
-			return false;
-		return id.equals(other.id);
+			}
+			return id.equals(other.id);
+		}
+		return false;
 	}
 }

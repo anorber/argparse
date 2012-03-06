@@ -26,7 +26,7 @@ public class Argument_should {
 	@Test
 	public void not_accept_null_long_names() {
 		try {
-			new Argument<OptId>(null, NO_ARGUMENT, NONE);
+			new Argument<OptId>(null, HasArg.values()[0], NONE);
 			fail();
 		} catch (IllegalArgumentException e) { }
 	}
@@ -43,7 +43,7 @@ public class Argument_should {
 	public void return_short_name() {
 		//given
 		final char expected = '_';
-		Argument<OptId> arg = new Argument<OptId>(expected, NO_ARGUMENT, NONE);
+		Argument<OptId> arg = new Argument<OptId>(expected, HasArg.valueOf("NO_ARGUMENT"), NONE);
 
 		//when
 		char result = arg.getShortName();
@@ -89,17 +89,6 @@ public class Argument_should {
 
 		//then
 		assertEquals(result, expected);
-	}
-
-	@Test
-	public void be_equal_to_itself() {
-		Argument<OptId> arg = new Argument<OptId>("", NO_ARGUMENT, NONE);
-
-		//when
-		boolean result = arg.equals(arg);
-
-		//then
-		assertTrue(result);
 	}
 
 	@Test

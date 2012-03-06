@@ -1,6 +1,11 @@
 package com.github.anorber.argparse;
 
 
+/**
+ * @author anorber
+ *
+ * @param <E>
+ */
 public class Argument <E> {
 
 	private final String longName;
@@ -32,12 +37,15 @@ public class Argument <E> {
 	}
 
 	private Argument(final int shortName, final String longName, final HasArg takesArgument, final E id) {
-		if (longName == null && shortName == -1)
+		if (longName == null && shortName == -1) {
 			throw new IllegalArgumentException("name should not be null");
-		if (takesArgument == null)
+		}
+		if (takesArgument == null) {
 			throw new IllegalArgumentException("takesArgument should not be null");
-		if (id == null)
+		}
+		if (id == null) {
 			throw new IllegalArgumentException("id should not be null");
+		}
 		this.shortName = (char) shortName;
 		this.longName = longName;
 		this.hasArg = takesArgument;
@@ -76,12 +84,14 @@ public class Argument <E> {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == null || !(obj instanceof Argument))
+		if (obj == null || !(obj instanceof Argument)) {
 			return false;
+		}
 		final Argument<?> other = (Argument<?>)obj;
 		if (longName == null) {
-			if (other.longName != null)
+			if (other.longName != null) {
 				return false;
+			}
 		} else if (!longName.equals(other.longName)) {
 			return false;
 		}

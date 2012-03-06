@@ -48,18 +48,6 @@ public class Option_should {
 	}
 
 	@Test
-	public void be_equal_to_itself() {
-		//given
-		Option<OptId> op = new Option<OptId>(NONE, "");
-
-		//when
-		boolean result = op.equals(op);
-
-		//then
-		assertTrue(result);
-	}
-
-	@Test
 	public void not_be_equal_to_null() {
 		//given
 		Option<OptId> op = new Option<OptId>(NONE, "");

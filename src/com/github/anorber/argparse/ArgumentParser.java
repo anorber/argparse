@@ -5,24 +5,29 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * @author anorber
+ *
+ * @param <E>
+ */
 public class ArgumentParser<E> implements Iterable<Option<E>> {
 
 	private final ArgumentList<E> arguments;
+	private final FoundOpts<E> foundOpts;
 
 	/**
-	 * TODO
 	 */
 	public ArgumentParser() {
-		arguments = new ArgumentList<E>();
+		foundOpts = new FoundOpts<E>();
+		arguments = new ArgumentList<E>(foundOpts);
 	}
 
 	/**
-	 * TODO
-	 *
-	 * @param other
+	 * @param other  an ArgumentParser to clone
 	 */
 	public ArgumentParser(final ArgumentParser<E> other) {
-		arguments = new ArgumentList<E>(other.arguments);
+		foundOpts = new FoundOpts<E>(other.foundOpts);
+		arguments = new ArgumentList<E>(other.arguments, foundOpts);
 	}
 
 	/**
@@ -43,7 +48,7 @@ public class ArgumentParser<E> implements Iterable<Option<E>> {
 	 * @param args  the args to be parsed
 	 * @return      the rest of the args after that the opts was parsed
 	 *               or null if args was null
-	 * @throws ArgumentParserException
+	 * @throws ArgumentParserException if somthing goes wrong
 	 */
 	public String[] parse(final String[] args) throws ArgumentParserException {
 		if (args == null) {
@@ -60,7 +65,7 @@ public class ArgumentParser<E> implements Iterable<Option<E>> {
 	 * @return        true if this parser found the option
 	 */
 	public boolean hasOption(final E option) {
-		return arguments.containsOption(option);
+		return foundOpts.containsOption(option);
 	}
 
 	/*
@@ -68,7 +73,7 @@ public class ArgumentParser<E> implements Iterable<Option<E>> {
 	 */
 	@Override
 	public Iterator<Option<E>> iterator() {
-		return arguments.getIterator();
+		return foundOpts.getIterator();
 	}
 
 	/**
@@ -78,7 +83,7 @@ public class ArgumentParser<E> implements Iterable<Option<E>> {
 	 * @return        the arguments in the order they appeared
 	 */
 	public String[] getArguments(final E option) {
-		final List<String> opt = arguments.getArgs(option);
+		final List<String> opt = foundOpts.getArgs(option);
 		if (opt == null) {
 			return null;
 		}
@@ -95,7 +100,7 @@ public class ArgumentParser<E> implements Iterable<Option<E>> {
 	 */
 	public String[] getArguments(final E option, final char delimiter) {
 		final List<String> buf = new ArrayList<String>();
-		final List<String> options = arguments.getArgs(option);
+		final List<String> options = foundOpts.getArgs(option);
 		if (options == null) {
 			return new String[0];
 		}
@@ -132,7 +137,7 @@ public class ArgumentParser<E> implements Iterable<Option<E>> {
 	 */
 	@Override
 	public int hashCode() {
-		return arguments.hashCode();
+		return arguments.hashCode() ^ foundOpts.hashCode();
 	}
 
 	/* (non-Javadoc)
@@ -140,10 +145,8 @@ public class ArgumentParser<E> implements Iterable<Option<E>> {
 	 */
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj == null || getClass() != obj.getClass()) {
-			return false;
-		}
-		final ArgumentList<?> otherArguments = ((ArgumentParser<?>)obj).arguments;
-		return arguments.equals(otherArguments);
+		return obj instanceof ArgumentParser
+				&& arguments.equals(((ArgumentParser<?>) obj).arguments)
+				&& foundOpts.equals(((ArgumentParser<?>) obj).foundOpts);
 	}
 }

@@ -16,14 +16,11 @@ public class Example {
 
 		System.out.println("opts:");
 		for (Option<String> opt : parser) {
-			System.out.print("   " + opt.getId());
-			String arg = opt.getArgument();
-//			if (arg != null)
-				System.out.print(" " + arg);
-			System.out.println();
+			System.out.println("   " + opt.getId() + " " + opt.getArgument());
 		}
 		System.out.println("args:");
-		for (String arg : args)
+		for (String arg : args) {
 			System.out.println("   " + arg);
+		}
 	}
 }

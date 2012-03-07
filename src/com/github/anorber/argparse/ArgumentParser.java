@@ -68,14 +68,6 @@ public class ArgumentParser<E> implements Iterable<Option<E>> {
 		return foundOpts.containsOption(option);
 	}
 
-	/*
-	 * @see java.lang.Runnable#run()
-	 */
-	@Override
-	public Iterator<Option<E>> iterator() {
-		return foundOpts.getIterator();
-	}
-
 	/**
 	 * Returns an array with the arguments given to this option.
 	 *
@@ -132,16 +124,21 @@ public class ArgumentParser<E> implements Iterable<Option<E>> {
 	}
 
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	/* @see java.lang.Runnable#run()
+	 */
+	@Override
+	public Iterator<Option<E>> iterator() {
+		return foundOpts.getIterator();
+	}
+
+	/* @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
 		return arguments.hashCode() ^ foundOpts.hashCode();
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/* @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(final Object obj) {

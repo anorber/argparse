@@ -7,10 +7,10 @@ public class Example {
 
 	public static void main(String[] args) throws ArgumentParserException {
 		ArgumentParser<String> parser = new ArgumentParser<String>();
-		parser.addArgument(new Argument<String>('a',     REQUIRED_ARGUMENT, "-a"));
-		parser.addArgument(new Argument<String>('b',     NO_ARGUMENT,       "-b"));
-		parser.addArgument(new Argument<String>("alpha", REQUIRED_ARGUMENT, "--alpha"));
-		parser.addArgument(new Argument<String>("beta",  NO_ARGUMENT,       "--beta"));
+		parser.addArgument(new Argument<String>("-a",      'a',     REQUIRED_ARGUMENT));
+		parser.addArgument(new Argument<String>("-b",      'b'));
+		parser.addArgument(new Argument<String>("--alpha", "alpha", REQUIRED_ARGUMENT));
+		parser.addArgument(new Argument<String>("--beta",  "beta"));
 
 		args = parser.parse(args);
 

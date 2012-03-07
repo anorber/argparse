@@ -1,6 +1,5 @@
 package com.github.anorber.argparse;
 
-import static com.github.anorber.argparse.HasArg.NO_ARGUMENT;
 import static com.github.anorber.argparse.TestSetup.OptId.NONE;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -70,7 +69,7 @@ public class ArgumentParser_should extends TestSetup {
 			fail("should throw exception if partial longopt lacks argument");
 		} catch (ArgumentParserException e) {
 			assertThat(e.getMessage(), is("option --alpha requires argument"));
-			assertThat(e.getOpt(), is("a"));
+			assertThat(e.getOpt(), is("--a"));
 		}
 	}
 
@@ -176,7 +175,7 @@ public class ArgumentParser_should extends TestSetup {
 		//given
 		ArgumentParser parser = new ArgumentParser();
 		ArgumentParser other = new ArgumentParser();
-		other.addArgument(new Argument("", NO_ARGUMENT, NONE));
+		other.addArgument(new Argument(NONE, ""));
 
 		//when
 		boolean result = parser.equals(other);
@@ -190,10 +189,10 @@ public class ArgumentParser_should extends TestSetup {
 	public void be_equal_if_different_optMaps() throws ArgumentParserException {
 		//given
 		ArgumentParser parser = new ArgumentParser();
-		parser.addArgument(new Argument('!', NO_ARGUMENT, NONE));
+		parser.addArgument(new Argument(NONE, '!'));
 
 		ArgumentParser other = new ArgumentParser();
-		other.addArgument(new Argument('!', NO_ARGUMENT, NONE));
+		other.addArgument(new Argument(NONE, '!'));
 		other.parse(new String[] {"-!"});
 
 		//when
@@ -208,8 +207,8 @@ public class ArgumentParser_should extends TestSetup {
 	public void not_be_equal_if_different_optsLists() throws ArgumentParserException {
 		//given
 		ArgumentParser parser = new ArgumentParser();
-		parser.addArgument(new Argument('!', NO_ARGUMENT, NO_ARGUMENT));
-		parser.addArgument(new Argument('?', NO_ARGUMENT, NONE));
+		parser.addArgument(new Argument(new Object(), '!'));
+		parser.addArgument(new Argument(NONE, '?'));
 
 		ArgumentParser other = new ArgumentParser(parser);
 
@@ -228,8 +227,8 @@ public class ArgumentParser_should extends TestSetup {
 	public void be_equal_if_same_state() throws ArgumentParserException {
 		//given
 		ArgumentParser parser = new ArgumentParser();
-		parser.addArgument(new Argument('!', NO_ARGUMENT, NO_ARGUMENT));
-		parser.addArgument(new Argument('?', NO_ARGUMENT, NONE));
+		parser.addArgument(new Argument(new Object(), '!'));
+		parser.addArgument(new Argument(NONE, '?'));
 
 		ArgumentParser other = new ArgumentParser(parser);
 
@@ -248,8 +247,8 @@ public class ArgumentParser_should extends TestSetup {
 	public void same_hash_code_if_equal() throws ArgumentParserException {
 		//given
 		ArgumentParser parser = new ArgumentParser();
-		parser.addArgument(new Argument('!', NO_ARGUMENT, NO_ARGUMENT));
-		parser.addArgument(new Argument('?', NO_ARGUMENT, NONE));
+		parser.addArgument(new Argument(new Object(), '!'));
+		parser.addArgument(new Argument(NONE, '?'));
 
 		ArgumentParser other = new ArgumentParser(parser);
 

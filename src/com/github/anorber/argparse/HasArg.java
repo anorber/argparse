@@ -2,7 +2,6 @@ package com.github.anorber.argparse;
 
 /**
  * @author anorber
- *
  */
 public enum HasArg {
 

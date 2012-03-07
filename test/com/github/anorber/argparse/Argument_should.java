@@ -2,8 +2,6 @@ package com.github.anorber.argparse;
 
 import static com.github.anorber.argparse.HasArg.NO_ARGUMENT;
 import static com.github.anorber.argparse.HasArg.REQUIRED_ARGUMENT;
-import static com.github.anorber.argparse.TestSetup.OptId.ALPHA;
-import static com.github.anorber.argparse.TestSetup.OptId.NONE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -11,14 +9,36 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import com.github.anorber.argparse.TestSetup.OptId;
-
 public class Argument_should {
+
+	private Object id = new Object();
+
+	@Test
+	public void haveSomeUsefulConstructors() {
+
+		// longopt, no arguments
+		new Argument<Object>(id, "alpha");
+
+		// shortopt, no arguments
+		new Argument<Object>(id, 'a');
+
+		// both longopt and shortopt, no arguments
+		new Argument<Object>(id, 'a', "alpha");
+
+		// longopt
+		new Argument<Object>(id, "alpha", NO_ARGUMENT);
+
+		// shortopt
+		new Argument<Object>(id, 'a', NO_ARGUMENT);
+
+		// both shortopt and longopt
+		new Argument<Object>(id, 'a', "alpha", NO_ARGUMENT);
+	}
 
 	@Test
 	public void not_accept_null_hasArg() {
 		try {
-			new Argument<OptId>('\1', null, NONE);
+			new Argument<Object>(id, '\0', "", null);
 			fail("should not accept null hasArg");
 		} catch (IllegalArgumentException e) { }
 	}
@@ -26,7 +46,7 @@ public class Argument_should {
 	@Test
 	public void not_accept_null_long_names() {
 		try {
-			new Argument<OptId>(null, HasArg.values()[0], NONE);
+			new Argument<Object>(id, null);
 			fail();
 		} catch (IllegalArgumentException e) { }
 	}
@@ -34,7 +54,7 @@ public class Argument_should {
 	@Test
 	public void not_accept_null_id() {
 		try {
-			new Argument<TestSetup.OptId>("", NO_ARGUMENT, null);
+			new Argument<TestSetup.OptId>(null, "");
 			fail("should not accept null id");
 		} catch (IllegalArgumentException e) { }
 	}
@@ -43,7 +63,7 @@ public class Argument_should {
 	public void return_short_name() {
 		//given
 		final char expected = '_';
-		Argument<OptId> arg = new Argument<OptId>(expected, HasArg.valueOf("NO_ARGUMENT"), NONE);
+		Argument<Object> arg = new Argument<Object>(id, expected);
 
 		//when
 		char result = arg.getShortName();
@@ -56,7 +76,7 @@ public class Argument_should {
 	public void return_long_name() {
 		//given
 		final String expected = "";
-		Argument<OptId> arg = new Argument<OptId>(expected, NO_ARGUMENT, NONE);
+		Argument<Object> arg = new Argument<Object>(id, expected);
 
 		//when
 		String result = arg.getLongName();
@@ -69,7 +89,7 @@ public class Argument_should {
 	public void return_hasArg() {
 		//given
 		final HasArg expected = NO_ARGUMENT;
-		Argument<OptId> arg = new Argument<OptId>("", expected, NONE);
+		Argument<Object> arg = new Argument<Object>(id, "", expected);
 
 		//when
 		HasArg result = arg.hasArg();
@@ -80,20 +100,18 @@ public class Argument_should {
 
 	@Test
 	public void return_id() {
-		//given
-		final OptId expected = NONE;
-		Argument<OptId> arg = new Argument<OptId>("", NO_ARGUMENT, expected);
+		Argument<Object> arg = new Argument<Object>(id, "");
 
 		//when
-		OptId result = arg.getId();
+		Object result = arg.getId();
 
 		//then
-		assertEquals(result, expected);
+		assertEquals(result, id);
 	}
 
 	@Test
 	public void not_be_equal_to_null() {
-		Argument<OptId> arg = new Argument<OptId>("", NO_ARGUMENT, NONE);
+		Argument<Object> arg = new Argument<Object>(id, "");
 
 		//when
 		boolean result = arg.equals(null);
@@ -104,7 +122,7 @@ public class Argument_should {
 
 	@Test
 	public void not_be_equal_to_other_type() {
-		Argument<OptId> arg = new Argument<OptId>("", NO_ARGUMENT, NONE);
+		Argument<Object> arg = new Argument<Object>(id, "");
 
 		//when
 		boolean result = arg.equals("");
@@ -115,8 +133,8 @@ public class Argument_should {
 
 	@Test
 	public void not_be_equal_if_different_hasArg() {
-		Argument<OptId> arg1 = new Argument<OptId>("", NO_ARGUMENT, NONE);
-		Argument<OptId> arg2 = new Argument<OptId>("", REQUIRED_ARGUMENT, NONE);
+		Argument<Object> arg1 = new Argument<Object>(id, "", NO_ARGUMENT);
+		Argument<Object> arg2 = new Argument<Object>(id, "", REQUIRED_ARGUMENT);
 
 		//when
 		boolean result = arg1.equals(arg2);
@@ -127,8 +145,9 @@ public class Argument_should {
 
 	@Test
 	public void not_be_equal_if_different_id() {
-		Argument<OptId> arg1 = new Argument<OptId>("", NO_ARGUMENT, NONE);
-		Argument<OptId> arg2 = new Argument<OptId>("", NO_ARGUMENT, ALPHA);
+		Object id2 = "";
+		Argument<Object> arg1 = new Argument<Object>(id, "", NO_ARGUMENT);
+		Argument<Object> arg2 = new Argument<Object>(id2, "", NO_ARGUMENT);
 
 		//when
 		boolean result = arg1.equals(arg2);
@@ -139,8 +158,8 @@ public class Argument_should {
 
 	@Test
 	public void not_be_equal_if_long_name_is_null_and_other_is_not() {
-		Argument<OptId> arg1 = new Argument<OptId>(' ', NO_ARGUMENT, NONE);
-		Argument<OptId> arg2 = new Argument<OptId>("", NO_ARGUMENT, NONE);
+		Argument<Object> arg1 = new Argument<Object>(id, ' ');
+		Argument<Object> arg2 = new Argument<Object>(id, "");
 
 		//when
 		boolean result = arg1.equals(arg2);
@@ -151,8 +170,8 @@ public class Argument_should {
 
 	@Test
 	public void not_be_equal_if_different_long_name() {
-		Argument<OptId> arg1 = new Argument<OptId>("!", NO_ARGUMENT, NONE);
-		Argument<OptId> arg2 = new Argument<OptId>("", NO_ARGUMENT, NONE);
+		Argument<Object> arg1 = new Argument<Object>(id, "!");
+		Argument<Object> arg2 = new Argument<Object>(id, "");
 
 		//when
 		boolean result = arg1.equals(arg2);
@@ -163,8 +182,8 @@ public class Argument_should {
 
 	@Test
 	public void not_be_equal_if_different_short_name() {
-		Argument<OptId> arg1 = new Argument<OptId>('!', NO_ARGUMENT, NONE);
-		Argument<OptId> arg2 = new Argument<OptId>('?', NO_ARGUMENT, NONE);
+		Argument<Object> arg1 = new Argument<Object>(id, '!');
+		Argument<Object> arg2 = new Argument<Object>(id, '?');
 
 		//when
 		boolean result = arg1.equals(arg2);
@@ -175,8 +194,8 @@ public class Argument_should {
 
 	@Test
 	public void be_equal_if_same_values() {
-		Argument<OptId> arg1 = new Argument<OptId>('!', NO_ARGUMENT, NONE);
-		Argument<OptId> arg2 = new Argument<OptId>('!', NO_ARGUMENT, NONE);
+		Argument<Object> arg1 = new Argument<Object>(id, '!');
+		Argument<Object> arg2 = new Argument<Object>(id, '!');
 
 		//when
 		boolean result = arg1.equals(arg2);
@@ -187,8 +206,8 @@ public class Argument_should {
 
 	@Test
 	public void have_same_hash_code_if_equal() {
-		Argument<OptId> arg1 = new Argument<OptId>('!', NO_ARGUMENT, NONE);
-		Argument<OptId> arg2 = new Argument<OptId>('!', NO_ARGUMENT, NONE);
+		Argument<Object> arg1 = new Argument<Object>(id, '!');
+		Argument<Object> arg2 = new Argument<Object>(id, '!');
 
 		//when
 
@@ -198,8 +217,8 @@ public class Argument_should {
 
 	@Test
 	public void have_same_hash_code_if_equal_() {
-		Argument<OptId> arg1 = new Argument<OptId>("", NO_ARGUMENT, NONE);
-		Argument<OptId> arg2 = new Argument<OptId>("", NO_ARGUMENT, NONE);
+		Argument<Object> arg1 = new Argument<Object>(id, "");
+		Argument<Object> arg2 = new Argument<Object>(id, "");
 
 		//when
 

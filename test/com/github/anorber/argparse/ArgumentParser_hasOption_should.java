@@ -1,6 +1,5 @@
 package com.github.anorber.argparse;
 
-import static com.github.anorber.argparse.HasArg.NO_ARGUMENT;
 import static com.github.anorber.argparse.TestSetup.OptId.A;
 import static com.github.anorber.argparse.TestSetup.OptId.ALPHA;
 import static com.github.anorber.argparse.TestSetup.OptId.B;
@@ -46,7 +45,7 @@ public class ArgumentParser_hasOption_should extends TestSetup {
 
 	@Test
 	public void recognize_longopts_that_is_substring_of_other_longopt() throws ArgumentParserException {
-		parser.addArgument(new Argument<OptId>("bastu", NO_ARGUMENT, NONE));
+		parser.addArgument(new Argument<OptId>(NONE, "basfoobar"));
 		parser.parse(new String[] { "--bas" });
 		assertThat(parser.hasOption(BAS), is(true));
 	}

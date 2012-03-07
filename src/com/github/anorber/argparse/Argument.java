@@ -1,5 +1,6 @@
 package com.github.anorber.argparse;
 
+import static com.github.anorber.argparse.HasArg.NO_ARGUMENT;
 
 /**
  * @author anorber
@@ -13,28 +14,6 @@ public class Argument <E> {
 
 	private final HasArg hasArg;
 	private final E id;
-
-	/**
-	 * An Argument
-	 *
-	 * @param name    longopt name
-	 * @param hasArg  does this option take an argument
-	 * @param id      an enum that identifies this argument
-	 */
-	public Argument(final String name, final HasArg hasArg, final E id) {
-		this(-1, name, hasArg, id);
-	}
-
-	/**
-	 * An argument
-	 *
-	 * @param name     shortopt name
-	 * @param hasArg  does this option take an argument
-	 * @param id       an enum that identifies this argument
-	 */
-	public Argument(final char name, final HasArg hasArg, final E id) {
-		this(name, null, hasArg, id);
-	}
 
 	private Argument(final int shortName, final String longName, final HasArg takesArgument, final E id) {
 		if (longName == null && shortName == -1) {
@@ -50,6 +29,42 @@ public class Argument <E> {
 		this.longName = longName;
 		this.hasArg = takesArgument;
 		this.id = id;
+	}
+
+	/**
+	 */
+	public Argument(final E id, String longopt) {
+		this(-1, longopt, NO_ARGUMENT, id);
+	}
+
+	/**
+	 */
+	public Argument(final E id, char shortopt) {
+		this(shortopt, null, NO_ARGUMENT, id);
+	}
+
+	/**
+	 */
+	public Argument(final E id, char shortopt, String longopt) {
+		this(shortopt, longopt, NO_ARGUMENT, id);
+	}
+
+	/**
+	 */
+	public Argument(final E id, String longopt, HasArg hasArg) {
+		this(-1, longopt, hasArg, id);
+	}
+
+	/**
+	 */
+	public Argument(final E id, char shortopt, HasArg hasArg) {
+		this(shortopt, null, hasArg, id);
+	}
+
+	/**
+	 */
+	public Argument(final E id, char shortopt, String longopt, HasArg hasArg) {
+		this(shortopt, longopt, hasArg, id);
 	}
 
 
@@ -72,8 +87,7 @@ public class Argument <E> {
 	}
 
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	/* @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
@@ -81,8 +95,7 @@ public class Argument <E> {
 		return shortName ^ hasArg.hashCode() ^ id.hashCode() ^ i;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/* @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(final Object obj) {

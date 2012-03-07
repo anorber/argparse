@@ -1,4 +1,4 @@
-- put possibilities into exception when longopts are not unique
++ put possibilities into exception when longopts are not unique
 
 - better javadoc comments
 
@@ -14,13 +14,15 @@
 
 - parse part of array (at least give possibility to define starting position)
 
-- use default value (what?) if takesArgument == null in Argument?
+* use default value (what?) if takesArgument == null in Argument?
 
 - throw exception if the same Argument is added twice?
 
 + refactor ArgumentParser
 
-- refactor ArgumentList
++ refactor ArgumentList
+
+
 
 
 

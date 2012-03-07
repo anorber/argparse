@@ -1,7 +1,13 @@
 package com.github.anorber.argparse;
 
+import static com.github.anorber.argparse.HasArg.NO_ARGUMENT;
 
-public class Argument <E extends Enum<?>> {
+/**
+ * @author anorber
+ *
+ * @param <E>
+ */
+public class Argument <E> {
 
 	private final String longName;
 	private final char shortName;
@@ -9,37 +15,56 @@ public class Argument <E extends Enum<?>> {
 	private final HasArg hasArg;
 	private final E id;
 
-	/**
-	 * An Argument
-	 *
-	 * @param name    longopt name
-	 * @param hasArg  does this option take an argument
-	 * @param id      an enum that identifies this argument
-	 */
-	public Argument(final String name, final HasArg hasArg, final E id) {
-		this('\0', name, hasArg, id);
-	}
-
-	/**
-	 * An argument
-	 *
-	 * @param name     shortopt name
-	 * @param hasArg  does this option take an argument
-	 * @param id       an enum that identifies this argument
-	 */
-	public Argument(final char name, final HasArg hasArg, final E id) {
-		this(name, null, hasArg, id);
-	}
-
-	private Argument(final char shortName, final String longName, final HasArg takesArgument, final E id) {
-		if (takesArgument == null)
-			throw new NullPointerException();
-		if (id == null)
-			throw new NullPointerException();
-		this.shortName = shortName;
+	private Argument(final int shortName, final String longName, final HasArg takesArgument, final E id) {
+		if (longName == null && shortName == -1) {
+			throw new IllegalArgumentException("name should not be null");
+		}
+		if (takesArgument == null) {
+			throw new IllegalArgumentException("takesArgument should not be null");
+		}
+		if (id == null) {
+			throw new IllegalArgumentException("id should not be null");
+		}
+		this.shortName = (char) shortName;
 		this.longName = longName;
 		this.hasArg = takesArgument;
 		this.id = id;
+	}
+
+	/**
+	 */
+	public Argument(final E id, String longopt) {
+		this(-1, longopt, NO_ARGUMENT, id);
+	}
+
+	/**
+	 */
+	public Argument(final E id, char shortopt) {
+		this(shortopt, null, NO_ARGUMENT, id);
+	}
+
+	/**
+	 */
+	public Argument(final E id, char shortopt, String longopt) {
+		this(shortopt, longopt, NO_ARGUMENT, id);
+	}
+
+	/**
+	 */
+	public Argument(final E id, String longopt, HasArg hasArg) {
+		this(-1, longopt, hasArg, id);
+	}
+
+	/**
+	 */
+	public Argument(final E id, char shortopt, HasArg hasArg) {
+		this(shortopt, null, hasArg, id);
+	}
+
+	/**
+	 */
+	public Argument(final E id, char shortopt, String longopt, HasArg hasArg) {
+		this(shortopt, longopt, hasArg, id);
 	}
 
 
@@ -48,6 +73,8 @@ public class Argument <E extends Enum<?>> {
 	}
 
 	String getLongName() {
+		if (longName == null)
+			return "";
 		return longName;
 	}
 
@@ -60,36 +87,29 @@ public class Argument <E extends Enum<?>> {
 	}
 
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	/* @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
-		final int i = longName != null ? longName.hashCode() : 0;
+		final int i = longName == null ? 0 : longName.hashCode();
 		return shortName ^ hasArg.hashCode() ^ id.hashCode() ^ i;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	/* @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
+	public boolean equals(final Object obj) {
+		if (obj == null || !(obj instanceof Argument)) {
 			return false;
-		if (!(obj instanceof Argument))
-			return false;
-		Argument<?> other = (Argument<?>)obj;
-		if (hasArg != other.hasArg)
-			return false;
-		if (!id.equals(other.id))
-			return false;
+		}
+		final Argument<?> other = (Argument<?>)obj;
 		if (longName == null) {
-			if (other.longName != null)
+			if (other.longName != null) {
 				return false;
-		} else if (!longName.equals(other.longName))
+			}
+		} else if (!longName.equals(other.longName)) {
 			return false;
-		return shortName == other.shortName;
+		}
+		return shortName == other.shortName && hasArg == other.hasArg && id.equals(other.id);
 	}
 }

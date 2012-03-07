@@ -14,7 +14,7 @@ public class ArgumentParser_iterable_Test2 extends TestSetup {
 	private String[] args;
 
 	@Before
-	public void setUp() throws ArgumentParserException {
+	public void init() throws ArgumentParserException {
 		//given
 		args = parser.parse(new String[] {"-baabba", "-bba", "foo", "bar"});
 		it = parser.iterator();

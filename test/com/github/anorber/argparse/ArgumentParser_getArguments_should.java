@@ -14,7 +14,7 @@ public class ArgumentParser_getArguments_should extends TestSetup {
 		parser.parse(args);
 
 		//when
-		final String[] result = parser.getArguments(OptId.None);
+		final String[] result = parser.getArguments(OptId.NONE);
 
 		//then
 		assertThat(result, is(nullValue()));
@@ -40,7 +40,7 @@ public class ArgumentParser_getArguments_should extends TestSetup {
 		parser.parse(args);
 
 		//when
-		final String[] result = parser.getArguments(OptId.Alpha);
+		final String[] result = parser.getArguments(OptId.ALPHA);
 
 		//then
 		assertThat(result, is(expected));
@@ -67,7 +67,7 @@ public class ArgumentParser_getArguments_should extends TestSetup {
 		parser.parse(args2);
 
 		//when
-		final String[] result = parser.getArguments(OptId.Alpha, ':');
+		final String[] result = parser.getArguments(OptId.ALPHA, ':');
 
 		//then
 		assertThat(result, is(expected));
@@ -80,7 +80,7 @@ public class ArgumentParser_getArguments_should extends TestSetup {
 		parser.parse(args2);
 
 		//when
-		final String[] result = parser.getArguments(OptId.None, ':');
+		final String[] result = parser.getArguments(OptId.NONE, ':');
 
 		//then
 		assertThat(result, is(expected));

@@ -1,8 +1,8 @@
 package com.github.anorber.argparse;
 
-import static com.github.anorber.argparse.HasArg.NO_ARGUMENT;
-import static com.github.anorber.argparse.TestSetup.OptId.None;
+import static com.github.anorber.argparse.TestSetup.OptId.NONE;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
@@ -15,10 +15,7 @@ public class ArgumentParser_should extends TestSetup {
 
 	@Test
 	public void not_accept_null_args() throws ArgumentParserException {
-		try {
-			parser.parse(null);
-			fail("should throw exception when parsing null");
-		} catch (NullPointerException e) { }
+		assertThat(parser.parse(null), is(nullValue()));
 	}
 
 	@Test
@@ -26,7 +23,7 @@ public class ArgumentParser_should extends TestSetup {
 		try {
 			parser.addArgument(null);
 			fail("should throw exception when adding null argument");
-		} catch (NullPointerException e) { }
+		} catch (IllegalArgumentException e) { }
 	}
 
 
@@ -72,6 +69,7 @@ public class ArgumentParser_should extends TestSetup {
 			fail("should throw exception if partial longopt lacks argument");
 		} catch (ArgumentParserException e) {
 			assertThat(e.getMessage(), is("option --alpha requires argument"));
+			assertThat(e.getOpt(), is("--a"));
 		}
 	}
 
@@ -177,7 +175,7 @@ public class ArgumentParser_should extends TestSetup {
 		//given
 		ArgumentParser parser = new ArgumentParser();
 		ArgumentParser other = new ArgumentParser();
-		other.addArgument(new Argument(null, NO_ARGUMENT, None));
+		other.addArgument(new Argument(NONE, ""));
 
 		//when
 		boolean result = parser.equals(other);
@@ -191,10 +189,10 @@ public class ArgumentParser_should extends TestSetup {
 	public void be_equal_if_different_optMaps() throws ArgumentParserException {
 		//given
 		ArgumentParser parser = new ArgumentParser();
-		parser.addArgument(new Argument('!', NO_ARGUMENT, None));
+		parser.addArgument(new Argument(NONE, '!'));
 
 		ArgumentParser other = new ArgumentParser();
-		other.addArgument(new Argument('!', NO_ARGUMENT, None));
+		other.addArgument(new Argument(NONE, '!'));
 		other.parse(new String[] {"-!"});
 
 		//when
@@ -209,8 +207,8 @@ public class ArgumentParser_should extends TestSetup {
 	public void not_be_equal_if_different_optsLists() throws ArgumentParserException {
 		//given
 		ArgumentParser parser = new ArgumentParser();
-		parser.addArgument(new Argument('!', NO_ARGUMENT, NO_ARGUMENT));
-		parser.addArgument(new Argument('?', NO_ARGUMENT, None));
+		parser.addArgument(new Argument(new Object(), '!'));
+		parser.addArgument(new Argument(NONE, '?'));
 
 		ArgumentParser other = new ArgumentParser(parser);
 
@@ -229,8 +227,8 @@ public class ArgumentParser_should extends TestSetup {
 	public void be_equal_if_same_state() throws ArgumentParserException {
 		//given
 		ArgumentParser parser = new ArgumentParser();
-		parser.addArgument(new Argument('!', NO_ARGUMENT, NO_ARGUMENT));
-		parser.addArgument(new Argument('?', NO_ARGUMENT, None));
+		parser.addArgument(new Argument(new Object(), '!'));
+		parser.addArgument(new Argument(NONE, '?'));
 
 		ArgumentParser other = new ArgumentParser(parser);
 
@@ -249,8 +247,8 @@ public class ArgumentParser_should extends TestSetup {
 	public void same_hash_code_if_equal() throws ArgumentParserException {
 		//given
 		ArgumentParser parser = new ArgumentParser();
-		parser.addArgument(new Argument('!', NO_ARGUMENT, NO_ARGUMENT));
-		parser.addArgument(new Argument('?', NO_ARGUMENT, None));
+		parser.addArgument(new Argument(new Object(), '!'));
+		parser.addArgument(new Argument(NONE, '?'));
 
 		ArgumentParser other = new ArgumentParser(parser);
 

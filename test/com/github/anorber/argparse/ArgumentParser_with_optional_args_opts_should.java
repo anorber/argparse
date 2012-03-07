@@ -18,8 +18,8 @@ public class ArgumentParser_with_optional_args_opts_should {
 	public void setup() {
 		//given
 		parser = new ArgumentParser<Op>();
-		parser.addArgument(new Argument<Op>('a', OPTIONAL_ARGUMENT, A));
-		parser.addArgument(new Argument<Op>("alpha", OPTIONAL_ARGUMENT, ALPHA));
+		parser.addArgument(new Argument<Op>(A, 'a', OPTIONAL_ARGUMENT));
+		parser.addArgument(new Argument<Op>(ALPHA, "alpha", OPTIONAL_ARGUMENT));
 	}
 
 	@Test

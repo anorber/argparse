@@ -8,24 +8,13 @@ import org.junit.Test;
 
 public class ArgumentList_should {
 
-	enum T {}
-
-	@Test
-	public void be_equal_to_itself() {
-		//given
-		ArgumentList<T> arglist = new ArgumentList<T>();
-
-		//when
-		boolean result = arglist.equals(arglist);
-
-		//then
-		assertTrue(result);
-	}
+	class T {}
+	FoundOpts<T> foundOpts = new FoundOpts<T>();
 
 	@Test
 	public void not_be_equal_to_null() {
 		//given
-		ArgumentList<T> arglist = new ArgumentList<T>();
+		ArgumentList<T> arglist = new ArgumentList<T>(foundOpts);
 
 		//when
 		boolean result = arglist.equals(null);
@@ -37,7 +26,7 @@ public class ArgumentList_should {
 	@Test
 	public void not_be_equal_to_other_type() {
 		//given
-		ArgumentList<T> arglist = new ArgumentList<T>();
+		ArgumentList<T> arglist = new ArgumentList<T>(foundOpts);
 
 		//when
 		boolean result = arglist.equals("");
@@ -49,8 +38,8 @@ public class ArgumentList_should {
 	@Test
 	public void not_be_equal_if_different_lists() {
 		//given
-		ArgumentList<T> arglist1 = new ArgumentList<T>();
-		ArgumentList<T> arglist2 = new ArgumentList<T>();
+		ArgumentList<T> arglist1 = new ArgumentList<T>(foundOpts);
+		ArgumentList<T> arglist2 = new ArgumentList<T>(foundOpts);
 		arglist1.add(null);
 
 		//when
@@ -63,8 +52,8 @@ public class ArgumentList_should {
 	@Test
 	public void be_equal_if_same_state() {
 		//given
-		ArgumentList<T> arglist1 = new ArgumentList<T>();
-		ArgumentList<T> arglist2 = new ArgumentList<T>();
+		ArgumentList<T> arglist1 = new ArgumentList<T>(foundOpts);
+		ArgumentList<T> arglist2 = new ArgumentList<T>(foundOpts);
 
 		//when
 		boolean result = arglist1.equals(arglist2);
@@ -76,8 +65,8 @@ public class ArgumentList_should {
 	@Test
 	public void have_the_same_hask_code_if_equal() {
 		//given
-		ArgumentList<T> arglist1 = new ArgumentList<T>();
-		ArgumentList<T> arglist2 = new ArgumentList<T>();
+		ArgumentList<T> arglist1 = new ArgumentList<T>(foundOpts);
+		ArgumentList<T> arglist2 = new ArgumentList<T>(foundOpts);
 
 		//when
 

@@ -1,18 +1,16 @@
-- put possibilities into exception when longopts are not unique
+- better readme file
 
 - better javadoc comments
 
 - define number of occurrences (1, ?, *, +)
 
+- parse part of array (at least give possibility to define starting position)
+
 - print help text?
 
-- better readme file
+- throw exception if the same Argument is added twice?
 
-- javadoc for ArgumentParser constructors
 
-- change Argument.id from enum to string?
-
-- parse part of array (at least give possibility to define starting position)
 
 
 

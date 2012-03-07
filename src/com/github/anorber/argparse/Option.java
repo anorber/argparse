@@ -1,15 +1,21 @@
 package com.github.anorber.argparse;
 
-public class Option <E extends Enum<?>> {
+/**
+ * @author anorber
+ *
+ * @param <E>
+ */
+public class Option <E> {
 
-	final private String argument;
-	final private E id;
+	private final String arg;
+	private final E id;
 
 	Option(final E id, final String argument) {
-		if (id == null)
-			throw new NullPointerException();
+		if (id == null) {
+			throw new IllegalArgumentException("id should not be null");
+		}
 		this.id = id;
-		this.argument = argument;
+		this.arg = argument;
 	}
 
 	/**
@@ -23,7 +29,7 @@ public class Option <E extends Enum<?>> {
 	 * @return the argument
 	 */
 	public String getArgument() {
-		return argument;
+		return arg;
 	}
 
 	/* (non-Javadoc)
@@ -31,28 +37,25 @@ public class Option <E extends Enum<?>> {
 	 */
 	@Override
 	public int hashCode() {
-		return (argument != null ? argument.hashCode() : 0) ^ id.hashCode();
+		return (arg == null ? 0 : arg.hashCode()) ^ id.hashCode();
 	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Option<?> other = (Option<?>)obj;
-
-		if (argument == null) {
-			if (other.argument != null)
+	public boolean equals(final Object obj) {
+		if (obj instanceof Option) {
+			final Option<?> other = (Option<?>) obj;
+			if (arg == null) {
+				if (other.arg != null) {
+					return false;
+				}
+			} else if (!arg.equals(other.arg)) {
 				return false;
-		} else if (!argument.equals(other.argument))
-			return false;
-
-		return id.equals(other.id);
+			}
+			return id.equals(other.id);
+		}
+		return false;
 	}
 }

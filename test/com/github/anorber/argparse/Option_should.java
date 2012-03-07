@@ -1,7 +1,7 @@
 package com.github.anorber.argparse;
 
-import static com.github.anorber.argparse.TestSetup.OptId.Alpha;
-import static com.github.anorber.argparse.TestSetup.OptId.None;
+import static com.github.anorber.argparse.TestSetup.OptId.ALPHA;
+import static com.github.anorber.argparse.TestSetup.OptId.NONE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -18,13 +18,13 @@ public class Option_should {
 		try {
 			new Option<OptId>(null, "");
 			fail();
-		} catch (NullPointerException e) { }
+		} catch (IllegalArgumentException e) { }
 	}
 
 	@Test
 	public void return_id() {
 		//given
-		final OptId expected = None;
+		final OptId expected = NONE;
 		Option<OptId> op = new Option<OptId>(expected, null);
 
 		//when
@@ -38,7 +38,7 @@ public class Option_should {
 	public void return_argument() {
 		//given
 		final String expected = "";
-		Option<OptId> op = new Option<OptId>(None, expected);
+		Option<OptId> op = new Option<OptId>(NONE, expected);
 
 		//when
 		String result = op.getArgument();
@@ -48,21 +48,9 @@ public class Option_should {
 	}
 
 	@Test
-	public void be_equal_to_itself() {
-		//given
-		Option<OptId> op = new Option<OptId>(None, "");
-
-		//when
-		boolean result = op.equals(op);
-
-		//then
-		assertTrue(result);
-	}
-
-	@Test
 	public void not_be_equal_to_null() {
 		//given
-		Option<OptId> op = new Option<OptId>(None, "");
+		Option<OptId> op = new Option<OptId>(NONE, "");
 
 		//when
 		boolean result = op.equals(null);
@@ -74,7 +62,7 @@ public class Option_should {
 	@Test
 	public void not_be_equal_to_other_type() {
 		//given
-		Option<OptId> op = new Option<OptId>(None, "");
+		Option<OptId> op = new Option<OptId>(NONE, "");
 
 		//when
 		boolean result = op.equals("");
@@ -86,8 +74,8 @@ public class Option_should {
 	@Test
 	public void not_be_equal_if_argument_is_null_and_other_is_not() {
 		//given
-		Option<OptId> op1 = new Option<OptId>(None, null);
-		Option<OptId> op2 = new Option<OptId>(None, "");
+		Option<OptId> op1 = new Option<OptId>(NONE, null);
+		Option<OptId> op2 = new Option<OptId>(NONE, "");
 
 		//when
 		boolean result = op1.equals(op2);
@@ -99,8 +87,8 @@ public class Option_should {
 	@Test
 	public void not_be_equal_if_argument_is_different() {
 		//given
-		Option<OptId> op1 = new Option<OptId>(None, "");
-		Option<OptId> op2 = new Option<OptId>(None, "!");
+		Option<OptId> op1 = new Option<OptId>(NONE, "");
+		Option<OptId> op2 = new Option<OptId>(NONE, "!");
 
 		//when
 		boolean result = op1.equals(op2);
@@ -112,8 +100,8 @@ public class Option_should {
 	@Test
 	public void not_be_equal_if_id_is_different() {
 		//given
-		Option<OptId> op1 = new Option<OptId>(None, "");
-		Option<OptId> op2 = new Option<OptId>(Alpha, "");
+		Option<OptId> op1 = new Option<OptId>(NONE, "");
+		Option<OptId> op2 = new Option<OptId>(ALPHA, "");
 
 		//when
 		boolean result = op1.equals(op2);
@@ -125,8 +113,8 @@ public class Option_should {
 	@Test
 	public void be_equal_if_same() {
 		//given
-		Option<OptId> op1 = new Option<OptId>(None, "");
-		Option<OptId> op2 = new Option<OptId>(None, "");
+		Option<OptId> op1 = new Option<OptId>(NONE, "");
+		Option<OptId> op2 = new Option<OptId>(NONE, "");
 
 		//when
 		boolean result = op1.equals(op2);
@@ -138,8 +126,8 @@ public class Option_should {
 	@Test
 	public void have_same_hash_code_if_equal() {
 		//given
-		Option<OptId> op1 = new Option<OptId>(None, "");
-		Option<OptId> op2 = new Option<OptId>(None, "");
+		Option<OptId> op1 = new Option<OptId>(NONE, "");
+		Option<OptId> op2 = new Option<OptId>(NONE, "");
 
 		//then
 		assertEquals(op1.hashCode(), op2.hashCode());
@@ -148,8 +136,8 @@ public class Option_should {
 	@Test
 	public void have_same_hash_code_if_equal_and_null() {
 		//given
-		Option<OptId> op1 = new Option<OptId>(None, null);
-		Option<OptId> op2 = new Option<OptId>(None, null);
+		Option<OptId> op1 = new Option<OptId>(NONE, null);
+		Option<OptId> op2 = new Option<OptId>(NONE, null);
 
 		//then
 		assertEquals(op1.hashCode(), op2.hashCode());
